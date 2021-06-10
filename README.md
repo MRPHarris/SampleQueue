@@ -40,7 +40,7 @@ collection of appropriately named and catalogued files that can then be
 indexed and interrogated with the existing R fluorescence analysis
 framework provided by the
 [eemR](https://cran.r-project.org/web/packages/eemR/index.html),
-[staRdom](https://github.com/MatthiasPucher/staRdom),
+[staRdom](https://github.com/MatthiasPucher/staRdom) and
 [EEM](https://CRAN.R-project.org/package=EEM) packages.
 
 This package is a work in progress. At the moment, I only support ABS

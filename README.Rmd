@@ -30,7 +30,7 @@ In a basic workflow, the user compiles a 'run sheet' - a basic spreadsheet conta
 
 Options are also available for the automatic blank-subtraction of MilliQ water blanks interspersed within a run. Suggested analysis workflows are included. 
 
-After running a **SampleQ** workflow, the user should be left with a collection of appropriately named and catalogued files that can then be indexed and interrogated with the existing R fluorescence analysis framework provided by the [eemR](https://cran.r-project.org/web/packages/eemR/index.html), [staRdom](https://github.com/MatthiasPucher/staRdom), [EEM](https://CRAN.R-project.org/package=EEM) packages.
+After running a **SampleQ** workflow, the user should be left with a collection of appropriately named and catalogued files that can then be indexed and interrogated with the existing R fluorescence analysis framework provided by the [eemR](https://cran.r-project.org/web/packages/eemR/index.html), [staRdom](https://github.com/MatthiasPucher/staRdom) and [EEM](https://CRAN.R-project.org/package=EEM) packages.
 
 This package is a work in progress. At the moment, I only support ABS (absorbance), PEM (processed EEMs) and .ogw (workbook) files as part of the workflow and functions. 
 
