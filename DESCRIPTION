@@ -1,11 +1,27 @@
 Package: SampleQ
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Working with the Aqualog sample queueing system in R.
+Version: 0.1.0.9000
+Authors@R: person("Matthew", "Harris", email = "m.r.p.harris@keele.ac.uk",
+  role = c("aut", "cre"))
+Author: Matthew Harris [aut, cre]
+Maintainer: Matthew Harris <m.r.p.harris@keele.ac.uk>
+Description: Collate, rename and process data files from the Aqualog spectrofluorometer's sample queueing system.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+  dplyr,
+  lubridate,
+  stringr,
+  EEM,
+  eemR,
+  staRdom,
+  data.tree,
+  plyr,
+  DiagrammeR,
+  readxl,
+  xlsx
+Depends: 
+    R (>= 3.1)
+RoxygenNote: 7.1.1

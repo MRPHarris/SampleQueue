@@ -3,6 +3,9 @@
 
 # SampleQ
 
+<p align="center">
+<img src="man/figures/SampleQ logo 1.png" height="150px" />
+</p>
 <!-- badges: start -->
 <!-- badges: end -->
 
