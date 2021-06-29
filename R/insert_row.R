@@ -11,7 +11,13 @@
 #'
 
 insert_row <- function(df, row, index) {
-  df[seq(index+1,nrow(df)+1),] <- df[seq(index,nrow(df)),]
-  df[index,] <- row
-  df
+  df <- as.data.frame(df)
+  if(index <= nrow(df)){
+    df[seq(index+1,nrow(df)+1),] <- df[seq(index,nrow(df)),]
+    df[index,] <- row
+    df
+  } else if(index > nrow(df)){# check if index > nrow. If so, tack it on the end.
+    df[nrow(df)+1,] <- row
+    df
+  }
 }

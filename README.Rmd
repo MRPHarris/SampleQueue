@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# SampleQ
+# SampleQueue
 <p align="center">
   <img src="man/figures/SampleQ logo 1.png" height="150px" />
 </p>
@@ -22,15 +22,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The **SampleQ** package is a collection of functions and scripts designed to act as a workflow for the Horiba Aqualog Spectrofluorometer's sample queuing system. Aqualog sample queuing offers an attractive alternative to standard single-sample analysis and processing tasks, automatically processing and correcting sample outputs during rapid, back-to-back analysis. Moreover, sample queuing avoids some of the classic pitfalls of the Aqualog's capability - namely, host computer processing slowdown as the user's project folder grows in size. 
+The **SampleQueue** package is a collection of functions and scripts designed to act as a workflow for the Horiba Aqualog Spectrofluorometer's sample queuing system. Aqualog sample queuing offers an attractive alternative to standard single-sample analysis and processing tasks, automatically processing and correcting sample outputs during rapid, back-to-back analysis. Moreover, sample queuing avoids some of the classic pitfalls of the Aqualog's capability - namely, host computer processing slowdown as the user's project folder grows in size. 
 
 Unfortunately, the sample queue only outputs files with a restrictive file naming convention - a basic collation of three words/suffixes/prefixes, along with sequential digits. This package provides a workaround, and allows the user to compile more complicated runs using the sample queueing function. 
 
 In a basic workflow, the user compiles a 'run sheet' - a basic spreadsheet containing the predicted sample queue names, and the user's own desired file names. Once the analysis is complete, the user processes the imported sample queue files using the run sheet, exporting the processed files (Absorbance data, Processed Excitation-Emission Matrices, Workbook files) with their 'real' names.
 
-Options are also available for the automatic blank-subtraction of MilliQ water blanks interspersed within a run. Suggested analysis workflows are included. 
-
-After running a **SampleQ** workflow, the user should be left with a collection of appropriately named and catalogued files that can then be indexed and interrogated with the existing R fluorescence analysis framework provided by the [eemR](https://cran.r-project.org/web/packages/eemR/index.html), [staRdom](https://github.com/MatthiasPucher/staRdom) and [EEM](https://CRAN.R-project.org/package=EEM) packages.
+After running a **SampleQueue** workflow, the user should be left with a collection of appropriately named and catalogued files that can then be indexed and interrogated with the existing R fluorescence analysis framework provided by the [eemR](https://cran.r-project.org/web/packages/eemR/index.html), [staRdom](https://github.com/MatthiasPucher/staRdom) and [EEM](https://CRAN.R-project.org/package=EEM) packages.
 
 This package is a work in progress. At the moment, I only support ABS (absorbance), PEM (processed EEMs) and .ogw (workbook) files as part of the workflow and functions. 
 
@@ -39,10 +37,10 @@ If you have any questions or comments, please don't hesitate to get in touch.
 
 ## Installation
 
-To get access to the functions in **SampleQ**, simply use the **devtools** package to install the package from github.
+To get access to the functions in **SampleQueue**, simply use the **devtools** package to install the package from github.
 
 ```r
-devtools::install_github("MRPHarris/SampleQ")
+devtools::install_github("MRPHarris/SampleQueue")
 ```
 
 ## References

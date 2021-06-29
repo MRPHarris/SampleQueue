@@ -1,4 +1,4 @@
-Package: SampleQ
+Package: SampleQueue
 Type: Package
 Title: Working with the Aqualog sample queueing system in R.
 Version: 0.1.0.9000

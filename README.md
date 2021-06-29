@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# SampleQ
+# SampleQueue
 
 <p align="center">
 <img src="man/figures/SampleQ logo 1.png" height="150px" />
@@ -9,7 +9,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The **SampleQ** package is a collection of functions and scripts
+The **SampleQueue** package is a collection of functions and scripts
 designed to act as a workflow for the Horiba Aqualog
 Spectrofluorometer’s sample queuing system. Aqualog sample queuing
 offers an attractive alternative to standard single-sample analysis and
@@ -31,11 +31,7 @@ processes the imported sample queue files using the run sheet, exporting
 the processed files (Absorbance data, Processed Excitation-Emission
 Matrices, Workbook files) with their ‘real’ names.
 
-Options are also available for the automatic blank-subtraction of MilliQ
-water blanks interspersed within a run. Suggested analysis workflows are
-included.
-
-After running a **SampleQ** workflow, the user should be left with a
+After running a **SampleQueue** workflow, the user should be left with a
 collection of appropriately named and catalogued files that can then be
 indexed and interrogated with the existing R fluorescence analysis
 framework provided by the
@@ -52,11 +48,11 @@ touch.
 
 ## Installation
 
-To get access to the functions in **SampleQ**, simply use the
+To get access to the functions in **SampleQueue**, simply use the
 **devtools** package to install the package from github.
 
 ``` r
-devtools::install_github("MRPHarris/SampleQ")
+devtools::install_github("MRPHarris/SampleQueue")
 ```
 
 ## References

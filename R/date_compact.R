@@ -10,11 +10,13 @@
 
 date_compact <- function(date, date.format = "%d/%m/%y"){
   if(isTRUE(is_date(mydate = date))){
-    message("Date format detected as dd/mm/yy.","\n",
-            "Generating run sheet for ",date,".")
-  } else{
+    date <- as.Date(date, format = date.format)
+    date_of_run_compact <- format(date, "%d%m%y")
+  } else if(isTRUE(is_date(mydate = date, date.format = "%d%m%y"))){
+    date_of_run_compact <- date
+  } else {
     stop("please enter a valid date of format dd/mm/yy")
   }
-  date_of_run_compact <- format(Date_b, "%d%m%y")
   return(date_of_run_compact)
 }
+
