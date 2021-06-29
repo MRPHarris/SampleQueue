@@ -4,10 +4,9 @@
 #'
 #' @description Write a log file to the specified destination.
 #'
-#' @param run_sheete The run sheet for this folder.
+#' @param run_sheet The run sheet for this folder.
 #' @param destination A full path to the export directory.
 #' @param folder
-#' @param append_date either NULL or a date of format %d/%m/%y or %d%m%y.
 #'
 #' @export
 #
@@ -160,11 +159,14 @@ append_txt_to_log <- function(log_file,txt_file_df){
 #'
 #' @noRd
 #
-save_log <- function(log_file, destination, name, append_date = datetime){
+save_log <- function(log_file,
+                     destination,
+                     name,
+                     append_date = NULL){
   if(!is.null(append_date)){
-    name <- paste0(name," gen",date_compact(format(append_date,"%d/%m/%y")))
+    name <- paste0(name," gen", date_compact(format(append_date, "%d/%m/%y")))
   }
-  write.table(log_file,paste0(destination,name,".txt"),col.names=FALSE, quote=FALSE, row.names=FALSE)
+  write.table(log_file, paste0(destination, name, ".txt"), col.names = FALSE, quote = FALSE, row.names = FALSE)
 }
 
 

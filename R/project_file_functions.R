@@ -1,4 +1,4 @@
-# Functions used to rename and save Aqualog project files (.opj files)
+# Functions used to rename and save Aqualog project files (.opj files).
 
 #' Transfer project files (.opj extension) to the project file folder, with some renaming.
 #'
