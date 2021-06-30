@@ -19,12 +19,10 @@ process_sample_queue <- function(folder,
   generate_logfile(run_sheet = run_sheet,
                    destination = paste0(export_dir,"logs/"),
                    folder = folder)
-
   # 2) Copy and re-name the project file.
   transfer_project_files(foldername = folder,
                          run_date = run_date,
                          export_directory = export_dir)
-
   # 3) Process the import folder using a run sheet.
   file_names_full <- get_names(directory = folder,
                                type = "files",
@@ -88,6 +86,7 @@ process_sample_queue <- function(folder,
       }
     } else if(input_type == "Sample" || input_type == "MilliQ Water Blank" || input_type == "Replicate" || input_type == "Standard"){
       ## "NORMAL" FILES
+      type_it <- input_type
       # This is the type folder where the files will end up.
       row_type_folder <- get_type_folder(run_sheet_row = row_it,
                                          export_dir = export_dir)
@@ -97,10 +96,9 @@ process_sample_queue <- function(folder,
       #                              full_names = TRUE)
       # Original, full filenames. The "to" part of the eventual file.copy() call.
       filenames_from <- sq_match_filenames_full
-
       dest_folders <- get_normal_folders(type_folder = row_type_folder,
                                          filenames = filenames_from,
-                                         input_type = input_type)
+                                         input_type = type_it)
       # Here are the real sample names using a str_replace() wrapper function.
       files_to_short <- get_real_filenames(filenames = filenames_from,
                                            real_name = input_real_name,
