@@ -4,12 +4,14 @@
 \alias{transfer_project_files}
 \title{Transfer project files (.opj extension) to the project file folder, with some renaming.}
 \usage{
-transfer_project_files(foldername, run_date)
+transfer_project_files(foldername, run_date, export_directory)
 }
 \arguments{
 \item{foldername}{Name of the folder containing the project file and other target samples.}
 
 \item{run_date}{The date of the run in format ddmmyy.}
+
+\item{export_directory}{A path to the export directory.}
 }
 \description{
 Takes all the project files in the target folder and moves them to the project file folder inside the export directory.

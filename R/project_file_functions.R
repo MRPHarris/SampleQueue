@@ -6,10 +6,11 @@
 #'
 #' @param foldername Name of the folder containing the project file and other target samples.
 #' @param run_date The date of the run in format ddmmyy.
+#' @param export_directory A path to the export directory.
 #'
 #' @export
 #
-transfer_project_files <- function(foldername, run_date){
+transfer_project_files <- function(foldername, run_date, export_directory){
   folder <- foldername
   rundate <- run_date
   # Get the file names again
