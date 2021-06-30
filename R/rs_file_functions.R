@@ -53,6 +53,7 @@ get_type_folder <- function(run_sheet_row,
       whichtype_otherstrings <- types[[t]]
     }
   }
+
   # folder should contain any of the strings in the matching types() list.
   possible_folders <- get_names(export_dir,type = "folders", full_names = FALSE)
   dest_folder_short <- matching_folder(foldernames = possible_folders, possible_strings = whichtype_otherstrings)
