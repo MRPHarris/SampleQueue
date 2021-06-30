@@ -1,6 +1,6 @@
 #' The main function of the SampleQueue package. Automatically processes Aqualog sample queue output files when given a set of parameters including a run sheet.
 #'
-#' @description Copies, renames and sorts output files from the Aqualog sample queue function based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files()
+#' @description Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files().
 #'
 #' @param folder The folder within the import directory containing all the files from the sample queue run related to the supplied run sheet.
 #' @param export_dir The export directory containing the 'type' subfolders.
