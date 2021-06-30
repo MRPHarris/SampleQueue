@@ -1,8 +1,8 @@
 # Functions used to set up the folders/directories used in the SampleQueue package.
 
-#' Create a sample queue folder set. It does not overwrite; you can "fill out" an incomplete folder set.
+#' Create the sample queue folder framework.
 #'
-#' @description Uses default_folder_layout() to create a set of nested folders that are used by the file handling functions.
+#' @description Uses default_folder_layout() to create a set of nested folders that are used by the file handling functions. It does not overwrite; you can "fill out" an incomplete folder set.
 #'
 #' @param parent_directory the folder within which all the folders will be created
 #' @param type one of "all", "import" or "export". "All" will create all the folders, and the other two options will only fill out those respective folders.
@@ -86,9 +86,9 @@ create_queue_folders <- function(parent_directory,
               type = "folders")
 }
 
-#' The default folder layout used by the SampleQueue package, in the form of nested list objects named according to their desired folder names.
+#' The default folder layout used by the SampleQueue package.
 #'
-#' @description A list, containing further nested lists mirroring the folder layout. Used by create_queue_folders() to create the folder framework used by this package.
+#' @description A list, containing further nested lists mirroring the folder layout used by the SampleQueue package. Used by create_queue_folders() to create the folder framework used by this package.
 #'
 #' @noRd
 #

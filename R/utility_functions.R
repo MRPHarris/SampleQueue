@@ -2,7 +2,7 @@
 
 #' Check if a date is valid.
 #'
-#' @description Check if the date is valid in the format %d/%m/%y. Adapted from https://stackoverflow.com/questions/48542804/r-date-format-check
+#' @description Check if the date is valid in the format dd/mm/yy. Adapted from https://stackoverflow.com/questions/48542804/r-date-format-check
 #'
 #' @param mydate the input date.
 #' @param date.format the format to check against.
@@ -16,7 +16,7 @@ is_date <- function(mydate, date.format = "%d/%m/%y"){
 
 #' Check if a date is valid, and return a compact version.
 #'
-#' @description Perform an is_date() check, and, if the date is valid under the prescribed format, return in format %d%m%y.
+#' @description Perform an is_date() check, and, if the date is valid under the prescribed format, return in format ddmmyy.
 #'
 #' @param date the date to convert to DDMMYY
 #' @param date.format the format of the imported date.

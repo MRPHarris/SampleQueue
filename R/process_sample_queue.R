@@ -1,10 +1,10 @@
-#' The main function of the SampleQueue package. Automatically processes Aqualog sample queue output files when given a set of parameters including a run sheet.
+#' Rename and collate Aqualog sample queue output files.
 #'
 #' @description Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files().
 #'
 #' @param folder The folder within the import directory containing all the files from the sample queue run related to the supplied run sheet.
 #' @param export_dir The export directory containing the 'type' subfolders.
-#' @param run_date Date of format %d/%m/%y on which the run was completed on the Aqualog.
+#' @param run_date Date of format dd/mm/yy on which the run was completed on the Aqualog.
 #' @param run_sheet A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.
 #' @param write_over TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?
 #'

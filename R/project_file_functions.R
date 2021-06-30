@@ -46,7 +46,7 @@ transfer_project_files <- function(foldername, run_date){
 #'
 #' @param project_file A project file name. Either short-form or long.
 #' @param folder_name Name of the folder containing the project file and other target samples.
-#' @param rundate The date of the run in format %d%m%y.
+#' @param rundate The date of the run in format ddmmyy.
 #'
 #' @noRd
 #

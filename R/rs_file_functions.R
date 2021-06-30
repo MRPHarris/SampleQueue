@@ -1,6 +1,6 @@
 # Internal functions used to process files that relate to the run sheet (i.e not .txt, project, or other files).
 
-#' Return the matching foldername (short form) when supplied with a number of names and possible strings to match.
+#' Return the matching foldername (short form).
 #'
 #' @description Return the matching foldername (short form) when supplied with a number of names and possible strings to match.
 #'
@@ -31,7 +31,7 @@ matching_folder <- function(foldernames,
   matching_name
 }
 
-#' Return the type folder that this run sheet row will have its associated files sent to.
+#' Return the type folder.
 #'
 #' @description Given a single row from a run sheet, where are these files destined to go? Operates by type - i.e. sampleq blank, milliq blank, sample, etc.
 #'
@@ -223,7 +223,7 @@ get_normal_folders <- function(type_folder,
   matching_folders
 }
 
-#' Given a set of filenames, and the associated real_name from the run_sheet, return the desired output filenames.
+#' Return the export filenames.
 #'
 #' @description Essentially a tortuous str_replace wrapper. Replaces the sq_name in the supplied filenames with the real_name, generating a set of new filenames.
 #'
