@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup_functions.R
 \name{create_queue_folders}
 \alias{create_queue_folders}
-\title{Create a sample queue folder set. It does not overwrite; you can "fill out" an incomplete folder set.}
+\title{Create the sample queue folder framework.}
 \usage{
 create_queue_folders(parent_directory, type = "all")
 }
@@ -12,5 +12,5 @@ create_queue_folders(parent_directory, type = "all")
 \item{type}{one of "all", "import" or "export". "All" will create all the folders, and the other two options will only fill out those respective folders.}
 }
 \description{
-Uses default_folder_layout() to create a set of nested folders that are used by the file handling functions.
+Uses default_folder_layout() to create a set of nested folders that are used by the file handling functions. It does not overwrite; you can "fill out" an incomplete folder set.
 }

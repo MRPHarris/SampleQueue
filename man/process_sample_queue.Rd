@@ -2,7 +2,7 @@
 % Please edit documentation in R/process_sample_queue.R
 \name{process_sample_queue}
 \alias{process_sample_queue}
-\title{The main function of the SampleQueue package. Automatically processes Aqualog sample queue output files when given a set of parameters including a run sheet.}
+\title{Rename and collate Aqualog sample queue output files.}
 \usage{
 process_sample_queue(
   folder,
@@ -17,7 +17,7 @@ process_sample_queue(
 
 \item{export_dir}{The export directory containing the 'type' subfolders.}
 
-\item{run_date}{Date of format %d/%m/%y on which the run was completed on the Aqualog.}
+\item{run_date}{Date of format dd/mm/yy on which the run was completed on the Aqualog.}
 
 \item{run_sheet}{A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.}
 
