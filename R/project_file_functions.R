@@ -67,7 +67,7 @@ projectfile_rename <- function(project_file, folder_name, rundate){
     projfile_date <- rundate
   }
   # How about the foldername?
-  folder_name_short <- unlist(strsplit(folder, "/"))
+  folder_name_short <- unlist(strsplit(folder_name, "/"))
   folder_name_short <- folder_name_short[length(folder_name_short)]
   folder_datecheck <- compact_date_present(string = folder_name_short)
   if(!is.null(folder_datecheck)){
