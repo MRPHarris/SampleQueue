@@ -21,9 +21,9 @@ transfer_project_files <- function(foldername, run_date, export_directory){
   # Pull out the text files - short and long form.
   project_files_short <- file_names_short[which(extensions == "opj")]
   project_files_full <- file_names_full[which(extensions == "opj")]
-  if(length(project_files) > 0){
+  if(length(project_files_short) > 0){
     # So, there's at least one project file.
-    it_list <- vector(mode = "list", length = length(project_files))
+    it_list <- vector(mode = "list", length = length(project_files_short))
     for(p in seq_along(it_list)){
       # Set up a looped file.copy.
       # get the destination
