@@ -39,7 +39,7 @@ process_sample_queue <- function(folder,
     # read in row attributes.
     input_sq_name <- row_it$SampleQ_Name
     input_real_name <- row_it$Real_Name
-    input_type <- get_type(row_it)
+    type_it <- get_type(row_it)
     # What files match this row?
     sq_match_filenames_full <- file_names_full[str_detect(file_names_full,input_sq_name)]
     sq_match_filenames_short <- file_names_short[str_detect(file_names_short,input_sq_name)]
@@ -48,7 +48,7 @@ process_sample_queue <- function(folder,
       log_rowstart <- 1
     }
     # Main distinguishing elements.
-    if(input_type == "Sample Queue Blank"){
+    if(type_it == "Sample Queue Blank"){
       ## SQ BLANK FILES
       # This is the folder where the files will end up.
       row_type_folder <- get_type_folder(run_sheet_row = row_it,
@@ -74,19 +74,18 @@ process_sample_queue <- function(folder,
       }
       # Add the files to the log
       file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),1] <- filenames_to
-      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- input_type
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- type_it
       log_rowstart <- log_rowstart+(length(filenames_to))
       # Ok, now do the file.copy call!
       check <- file.copy(from = filenames_from, to = filenames_to, overwrite = write_over)
       # Completion message
       if(all(check)){
-        message("Files related to run-sheet row ",r," (",input_type,")"," were processed successfully.")
+        message("Files related to run-sheet row ",r," (",type_it,")"," were processed successfully.")
       } else{
         message("There was an issue copying the file/s from run sheet row ",r,".")
       }
-    } else if(input_type == "Sample" || input_type == "MilliQ Water Blank" || input_type == "Replicate" || input_type == "Standard"){
+    } else if(type_it == "Sample" || type_it == "MilliQ Water Blank" || type_it == "Replicate" || type_it == "Standard"){
       ## "NORMAL" FILES
-      type_it <- input_type
       # This is the type folder where the files will end up.
       row_type_folder <- get_type_folder(run_sheet_row = row_it,
                                          export_dir = export_dir)
@@ -111,13 +110,13 @@ process_sample_queue <- function(folder,
       }
       # Add the files to the log
       file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),1] <- filenames_to
-      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- input_type
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- type_it
       log_rowstart <- log_rowstart+(length(filenames_to))
       # Ok, now do the file.copy call!
       check <- file.copy(from = filenames_from, to = filenames_to, overwrite = write_over)
       # Completion message
       if(all(check)){
-        message("Files related to run-sheet row ",r," (",input_type,")"," were processed successfully.")
+        message("Files related to run-sheet row ",r," (",type_it,")"," were processed successfully.")
       } else{
         message("There was an issue copying the file/s from run sheet row ",r,".")
       }
