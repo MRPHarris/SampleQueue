@@ -170,6 +170,7 @@ get_sqblank_folders <- function(type_folder,
 get_normal_folders <- function(type_folder,
                                filenames,
                                input_type){
+  type_rename = input_type
   type_destfolders <- get_names(directory = type_folder,
                                 type = "folders",
                                 full_names = TRUE)
@@ -184,7 +185,7 @@ get_normal_folders <- function(type_folder,
     if(file_extension == "ogw"){
       # workbook file handling
       # Get the folder in the sampleq folder that matches this file type.
-      types <- extension_strings(type = input_type)
+      types <- extension_strings(type = type_rename)
       input_ext <- "workbook"
       whichtype <- vector(mode = "character", length = 1)
       for(t in seq_along(types)){

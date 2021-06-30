@@ -29,11 +29,11 @@ type_strings <- function(){
 extension_strings <- function(type){
   # Returns a list object containing match strings for: .ogw, .blank,
   if(type == "Sample Queue Blank"){
-    sqblank_data_strings_string_list <- vector(mode = "list", length = 2)
-    names(sqblank_data_strings_string_list) <- c("Blank File", "Workbook File")
-    sqblank_data_strings_string_list[["Blank File"]] <- c("blank files","blank file","Blank Files","Blank File")
-    sqblank_data_strings_string_list[["Workbook File"]] <- c("workbook","workbooks","Workbook","Workbooks","Workbook File","workbook file","Workbook Files","workbook files")
-    sqblank_data_strings_string_list
+    strings_list <- vector(mode = "list", length = 2)
+    names(strings_list) <- c("Blank File", "Workbook File")
+    strings_list[["Blank File"]] <- c("blank files","blank file","Blank Files","Blank File")
+    strings_list[["Workbook File"]] <- c("workbook","workbooks","Workbook","Workbooks","Workbook File","workbook file","Workbook Files","workbook files")
+    strings_list
   } else if(type == "Sample" || input_type == "MilliQ Water Blank" || input_type == "Replicate" || input_type == "Standard"){
     strings_list <- vector(mode = "list", length = 2)
     names(strings_list) <- c("Workbook File","ASCII Data File")
@@ -41,6 +41,7 @@ extension_strings <- function(type){
     strings_list[["ASCII Data File"]] <- NULL # As far as I know there is no instance wherein this is returned.
     strings_list
   }
+  strings_list
 }
 
 #' Serves two purposes: gives acceptable folder names for given ASCII data types, and matches the ASCII type 3-character signifier. I.e. ABS for Absorbance Data. If adding support for more ASCII types, start here then go and modify the folders.
