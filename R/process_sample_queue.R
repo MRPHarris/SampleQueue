@@ -99,7 +99,8 @@ process_sample_queue <- function(folder,
       filenames_from <- sq_match_filenames_full
 
       dest_folders <- get_normal_folders(type_folder = row_type_folder,
-                                         filenames = filenames_from)
+                                         filenames = filenames_from,
+                                         input_type = input_type)
       # Here are the real sample names using a str_replace() wrapper function.
       files_to_short <- get_real_filenames(filenames = filenames_from,
                                            real_name = input_real_name,

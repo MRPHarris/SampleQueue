@@ -163,11 +163,13 @@ get_sqblank_folders <- function(type_folder,
 #'
 #' @param type_folder the type folder.
 #' @param filenames a character vector of filenames to be matched with sub-folders within the type folder.
+#' @param input_type one of the acceptable input sample types. See type_strings().
 #'
 #' @noRd
 #
 get_normal_folders <- function(type_folder,
-                               filenames){
+                               filenames,
+                               input_type){
   type_destfolders <- get_names(directory = type_folder,
                                 type = "folders",
                                 full_names = TRUE)
