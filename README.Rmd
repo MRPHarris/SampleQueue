@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The **SampleQueue** package is a streamlined set of functions designed to act as a file processing framework for the Horiba Aqualog spectrofluorimeter's sample queuing system. Sample queuing potentially offers an attractive alternative to standard single-sample analysis and processing tasks, automatically processing and correcting sample outputs during rapid, back-to-back analysis. Moreover, sample queuing avoids some of the classic pitfalls of the Aqualog's capability - namely, host computer processing slowdown as the user's project folder grows in size. 
+The **SampleQueue** package is a streamlined set of functions designed to act as a file processing framework for the Horiba Aqualog spectrofluorometer's sample queuing system. Sample queuing potentially offers an attractive alternative to standard single-sample analysis and processing tasks, automatically processing and correcting sample outputs during rapid, back-to-back analysis. Moreover, sample queuing avoids some of the classic pitfalls of the Aqualog's capability - namely, host computer processing slowdown as the user's project folder grows in size. 
 
 Unfortunately, the sample queue only outputs files with a restrictive file naming convention - a basic collation of three words/suffixes/prefixes, along with sequential digits (e.g. Example001Sample0001). This package provides a workaround, and allows the user to compile more complicated runs using the sample queueing function in a fashion that is similar to other scientific systems. 
 

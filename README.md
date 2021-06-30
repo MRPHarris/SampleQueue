@@ -11,7 +11,7 @@
 
 The **SampleQueue** package is a streamlined set of functions designed
 to act as a file processing framework for the Horiba Aqualog
-spectrofluorimeter’s sample queuing system. Sample queuing potentially
+spectrofluorometer’s sample queuing system. Sample queuing potentially
 offers an attractive alternative to standard single-sample analysis and
 processing tasks, automatically processing and correcting sample outputs
 during rapid, back-to-back analysis. Moreover, sample queuing avoids
