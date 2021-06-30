@@ -58,7 +58,7 @@ compact_date_present <- function(string){
   # Getting the date from the string, if it exists. First one.
   if(isTRUE(any(check_string_date))){
     # So, there's a datestring.
-    string_date <- projfile_components_spacesep[first(which(check_string_date))]
+    string_date <- string_spacesep[first(which(check_string_date))]
   } else {
     # No datestring! NULL.
     string_date <- NULL
