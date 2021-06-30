@@ -5,7 +5,7 @@
 #' @description Takes all the project files in the target folder and moves them to the project file folder inside the export directory.
 #'
 #' @param foldername Name of the folder containing the project file and other target samples.
-#' @param run_date The date of the run in format %d%m%y.
+#' @param run_date The date of the run in format ddmmyy.
 #'
 #' @export
 #

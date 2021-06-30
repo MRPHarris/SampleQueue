@@ -9,7 +9,7 @@ transfer_project_files(foldername, run_date)
 \arguments{
 \item{foldername}{Name of the folder containing the project file and other target samples.}
 
-\item{run_date}{The date of the run in format %d%m%y.}
+\item{run_date}{The date of the run in format ddmmyy.}
 }
 \description{
 Takes all the project files in the target folder and moves them to the project file folder inside the export directory.
