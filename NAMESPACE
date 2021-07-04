@@ -2,5 +2,6 @@
 
 export(create_queue_folders)
 export(generate_logfile)
+export(get_names)
 export(process_sample_queue)
 export(transfer_project_files)

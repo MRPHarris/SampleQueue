@@ -1,4 +1,5 @@
-# General purpose utility functions for the SampleQueue package. These functions are internal, i.e. not exported.
+# General purpose utility functions for the SampleQueue package. These functions are almost all internal, i.e. not exported.
+# The exception is get_names(), which is useful for assessing folder contents, and thus whether the package is operating as it should.
 
 #' Check if a date is valid.
 #'
@@ -114,7 +115,7 @@ ext_detect <- function(filenames){
 #' @param full_names TRUE/FALSE to obtain full paths for each object.
 #' @param recursive list.dirs and list.files option. Should the listing recurse into directories?
 #'
-#' @noRd
+#' @export
 #
 get_names <- function(directory,
                       type = "files",
