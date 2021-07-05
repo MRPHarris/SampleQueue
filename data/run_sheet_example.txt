@@ -1,0 +1,12 @@
+Order	Remaining	SampleQ_Name	Real_Name	Type	Checklist
+1	10	Example0001Blank	swc_sqblank_050721	sqblank	
+2	9	Example0001Sample0001	mqblank_050721a	mqblank	
+3	8	Example0001Sample0002	mqblank_050721b	mqblank	
+4	7	Example0001Sample0003	Sample_1	sample	
+5	6	Example0001Sample0004	Sample_2	sample	
+6	5	Example0001Sample0005	Sample_3	sample	
+7	4	Example0001Sample0006	Sample_4	sample	
+8	3	Example0001Sample0007	Sample_5	sample	
+9	2	Example0001Sample0018	StandardA_050721a	standard	
+10	1	Example0001Sample0019	Sample_1_re	replicate	
+11	0	Example0001Sample0020	mqblank_050721c	mqblank	

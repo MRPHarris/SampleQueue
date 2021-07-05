@@ -15,26 +15,49 @@ knitr::opts_chunk$set(
 
 # SampleQueue
 <p align="center">
-  <img src="man/figures/SampleQ logo 1.png" height="150px" />
+  <img src="man/figures/sample queue logo v1.png" height="150px" />
 </p>
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-The **SampleQueue** package is a streamlined set of functions designed to act as a file processing framework for the Horiba Aqualog spectrofluorometer's sample queuing system. Sample queuing potentially offers an attractive alternative to standard single-sample analysis and processing tasks, automatically processing and correcting sample outputs during rapid, back-to-back analysis. Moreover, sample queuing avoids some of the classic pitfalls of the Aqualog's capability - namely, host computer processing slowdown as the user's project folder grows in size. 
+The **SampleQueue** package is a streamlined set of functions that act as a file processing framework for the Horiba Aqualog spectrofluorometer's sample queuing ("SampleQ") system. During SampleQ, the Aqualog software automatically processes and corrects sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do for individual samples (such as correction for inner filter effects and Rayleigh masking). 
 
-Unfortunately, the sample queue only outputs files with a restrictive file naming convention - a basic collation of three words/suffixes/prefixes, along with sequential digits (e.g. Example001Sample0001). This package provides a workaround, and allows the user to compile more complicated runs using the sample queueing function in a fashion that is similar to other scientific systems. 
+SampleQ also avoids some of the classic pitfalls of the Aqualog's capability, including host computer processing slowdown as the user's project folder grows in size. Using an analysis configuration incorporating 88 excitation wavelength bands and all processing steps (ex240:ex500 in 3nm steps), samples each take 2:45 (165 seconds) using my lab's host computer.
 
-In a simple workflow, the user compiles a 'run sheet' - a basic table containing the predicted sample queue names, the user's own desired file names, and one of a number of row-file 'types'. Once the analysis is complete, the user processes the imported sample queue files using the run sheet, exporting the processed files (Absorbance data, Processed Excitation-Emission Matrices, Workbook files) with their 'real' names. With correct set-up, this is performed by the single function `process_sample_queue()`. Setting up the folder framework within the desired directory is done using `create_queue_folders()`.
+Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention. This comprises a basic collation of prefixes/suffixes, along with sequential digits (e.g. Example001Sample0001 or Example001Blank). This package provides a workaround, allowing the user to compile complex runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and the **SampleQueue** package allows for sample throughput exceeding 100 samples per day under ideal circumstances (minimal sample pre-treatment, etc.). 
+
+## Using the SampleQueue package
+
+The basic logic comprising the **SampleQueue** package workflow is illustrated below.
+
+<p align="center">
+  <img src="man/figures/workflow example v1.png" height="850px" />
+</p>
+
+Setting up the folder framework used by the **SampleQueue** package is performed by choosing a parent directory and running `create_queue_folders()`. 
+
+In a standard workflow, the user then compiles a 'run sheet'. A run sheet is comprised of a basic table containing the predicted sample queue names, the user's own desired file names, and one of a number of supported row-file 'types' (e.g. 'sample', "mqblank", "sqblank", "standard", "replicate"). An example is shown below. Column names must match those shown in the example in order for the package to work. The "Real_Names" column can include any combination of characters or digits reflecting your desired file naming convention. The checklist column is optional - I use it whilst running samples on the Aqualog to ensure there is no chance of a mix-up during the course of an analysis. 
+
+```{r, include = TRUE}
+data_example <- read.table(file = "data/run_sheet_example.txt", sep = "\t", header = TRUE)
+knitr::kable(data_example)
+```
+
+Once analysis using SampleQ on the Aqualog is completed, the user collates the files together in a folder with any project (.opj) and text files (.txt) into a single folder, and moves this folder to the **SampleQueue** import directory.
+
+After this, running the function `process_sample_queue()` with the appropriate parameter inputs (correct run sheet, etc.) will automatically rename and copy all the files to the appropriate folders within the **SampleQueue** export folder. 
 
 After running a **SampleQueue** workflow, the user should be left with a collection of appropriately named and catalogued files that can then be indexed and interrogated with the existing R fluorescence analysis framework provided chiefly by the [eemR](https://cran.r-project.org/web/packages/eemR/index.html), [staRdom](https://github.com/MatthiasPucher/staRdom) and [EEM](https://CRAN.R-project.org/package=EEM) packages.
 
 If you have any questions or comments, please don't hesitate to get in touch.
 
+This package is a work in progress. **Always back up your data!**
+
 ## Supported file and data types
 
-When running samples with sample queue, the user exports to a specified directory. The following file types are extracted from this directory by the **SampleQueue** package.
+The following file types are extracted from the designated folder by the **SampleQueue** package.
 
 ### .txt files
 
@@ -42,15 +65,15 @@ Text files are collated together using the `generate_logfile()` function. This o
 
 ### .opj project files
 
-The standard way of using the Aqualog software is to work in a project file, which features the .opj file extension. Any and all project files in the imported folder are copied (renamed) to the relevant folder in the export directory, with the imported folder name appended to the project file name if it wasn't already. 
+The standard way of using the Aqualog software is to work in a project file, which features the .opj file extension. Any and all project files in the imported folder are copied (renamed) to the relevant folder in the export directory using `transfer_project_files()`, with the imported folder name appended to the project file name if it wasn't already. 
 
 ### .ogw workbook files
 
-If the user has chosen to export workbook files with their data whilst running the Aqualog sample queue, their chosen folder will be populated with .ogw workbook files for each sample/blank. These files can be loaded back into the Aqualog software and track all processing steps for each file. As with the ASCII .dat files, each .ogw file is copied (renamed) to a suitable export folder matching the sample type. 
+If the user has chosen to export workbook files with their data whilst running the Aqualog sample queue, their chosen folder will be populated with .ogw workbook files for each sample/blank. These files can be loaded back into the Aqualog software to track all processing steps for each file. As with the ASCII .dat files, each .ogw file is copied (renamed) to a suitable export folder matching the sample type. 
 
 ### ASCII .dat files
 
-The current live package supports the ABS (absorbance data) and PEM (sample-blank processed XYY) ASCII .dat data types. The others (e.g. % transmission PCT, blank XYY BEM) will be added in a subsequent release. 
+Depending on user choices during the SampleQ setup process on the Aqualog, a number of different ASCII file types will be exported by the system for each sample during analysis. All ASCII files have the .dat file extension. The current version of the **SampleQueue** package supports the ABS (absorbance data) and PEM (sample-blank processed XYY) ASCII data types. The others (e.g. % transmission PCT, blank XYY BEM) will be added in a subsequent release. 
 
 ## Installation
 
