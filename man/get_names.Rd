@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{get_names}
 \alias{get_names}
-\title{Get object (file or folder) names from a given directory}
+\title{Get object names from a given directory}
 \usage{
 get_names(
   directory,

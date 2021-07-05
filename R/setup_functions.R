@@ -8,7 +8,7 @@
 #' @param type one of "all", "import" or "export". "All" will create all the folders, and the other two options will only fill out those respective folders.
 #'
 #' @export
-#
+#'
 create_queue_folders <- function(parent_directory,
                                  type = "all"){
   ## type input checks
@@ -91,7 +91,7 @@ create_queue_folders <- function(parent_directory,
 #' @description A list, containing further nested lists mirroring the folder layout used by the SampleQueue package. Used by create_queue_folders() to create the folder framework used by this package.
 #'
 #' @noRd
-#
+#'
 default_folder_layout <- function(){
   folderx2 <- vector(mode = "list", length = 2)
   folderx3 <- vector(mode = "list", length = 3)

@@ -9,7 +9,7 @@
 #' @param export_directory A path to the export directory.
 #'
 #' @export
-#
+#'
 transfer_project_files <- function(foldername, run_date, export_directory){
   folder <- foldername
   rundate <- run_date
@@ -50,7 +50,7 @@ transfer_project_files <- function(foldername, run_date, export_directory){
 #' @param rundate The date of the run in format ddmmyy.
 #'
 #' @noRd
-#
+#'
 projectfile_rename <- function(project_file, folder_name, rundate){
   # Are there backslashes present? If yes, break apart and pick last string, which should be the projfile short name.
   checkslash <- str_detect(project_file,"/")

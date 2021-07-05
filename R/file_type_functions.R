@@ -5,7 +5,7 @@
 #' @description Called internally in many functions to return a list containing the character strings used to define the different file "types" on the run sheet. Accessed by get_type().
 #'
 #' @noRd
-#
+#'
 type_strings <- function(){
   # There are broadly 5 types.
   type_string_list <- vector(mode = "list", length = 5)
@@ -25,7 +25,7 @@ type_strings <- function(){
 #' @param type one of "Sample Queue Blank", "Sample", "MilliQ Water Blank", "Replicate", "Standard"
 #'
 #' @noRd
-#
+#'
 extension_strings <- function(type){
   # Returns a list object containing match strings for: .ogw, .blank,
   if(type == "Sample Queue Blank"){
@@ -49,7 +49,7 @@ extension_strings <- function(type){
 #' @description  Return the acceptable folder names for the supported Aqualog ASCII data types, and visa versa for file ASCII data type detection purposes.
 #'
 #' @noRd
-#
+#'
 ASCII_strings <- function(){
   strings_list <- vector(mode = "list", length = 2)
   names(strings_list) <- c("Absorbance File","Processed EEM")

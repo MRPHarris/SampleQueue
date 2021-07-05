@@ -8,7 +8,7 @@
 #' @param possible_strings a character vector containing one or more strings to be matched with the folder names.
 #'
 #' @noRd
-#
+#'
 matching_folder <- function(foldernames,
                             possible_strings){
   it_list <- vector(mode = "list", length = length(foldernames))
@@ -39,7 +39,7 @@ matching_folder <- function(foldernames,
 #' @param export_dir the export directory.
 #'
 #' @noRd
-#
+#'
 get_type_folder <- function(run_sheet_row,
                             export_dir){
   input_type <- run_sheet_row$Type
@@ -70,7 +70,7 @@ get_type_folder <- function(run_sheet_row,
 #' @param run_sheet_row single-row dataframe. A row from a run sheet.
 #'
 #' @noRd
-#
+#'
 get_type <- function(run_sheet_row){
   input_type <- run_sheet_row$Type
   types <- type_strings()
@@ -93,7 +93,7 @@ get_type <- function(run_sheet_row){
 #' @param filenames a character vector of filenames to be matched with sub-folders within the type folder.
 #'
 #' @noRd
-#
+#'
 get_sqblank_folders <- function(type_folder,
                                 filenames){
   type_destfolders <- get_names(directory = type_folder,
@@ -167,7 +167,7 @@ get_sqblank_folders <- function(type_folder,
 #' @param input_type one of the acceptable input sample types. See type_strings().
 #'
 #' @noRd
-#
+#'
 get_normal_folders <- function(type_folder,
                                filenames,
                                input_type){
@@ -236,7 +236,7 @@ get_normal_folders <- function(type_folder,
 #' @param sq_name the "SampleQ_Name" from the run sheet.
 #'
 #' @noRd
-#
+#'
 get_real_filenames <- function(filenames,
                                real_name,
                                sq_name){
@@ -264,7 +264,7 @@ get_real_filenames <- function(filenames,
 #' @param filename a single file name.
 #'
 #' @noRd
-#
+#'
 ASCII_data_type <- function(filename){
   ext <- ext_detect(filename)
   if(str_detect(filename,"/")){

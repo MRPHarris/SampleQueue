@@ -1,110 +1,8 @@
 # General purpose utility functions for the SampleQueue package. These functions are almost all internal, i.e. not exported.
 # The exception is get_names(), which is useful for assessing folder contents, and thus whether the package is operating as it should.
 
-#' Check if a date is valid.
-#'
-#' @description Check if the date is valid in the format dd/mm/yy. Adapted from https://stackoverflow.com/questions/48542804/r-date-format-check
-#'
-#' @param mydate the input date.
-#' @param date.format the format to check against.
-#'
-#' @noRd
-#
-is_date <- function(mydate, date.format = "%d/%m/%y"){
-  tryCatch(!is.na(as.Date(mydate, date.format)),
-           error = function(err) {FALSE})
-}
 
-#' Check if a date is valid, and return a compact version.
-#'
-#' @description Perform an is_date() check, and, if the date is valid under the prescribed format, return in format ddmmyy.
-#'
-#' @param date the date to convert to DDMMYY
-#' @param date.format the format of the imported date.
-#'
-#' @noRd
-#
-date_compact <- function(date, date.format = "%d/%m/%y"){
-  if(isTRUE(is_date(mydate = date))){
-    date <- as.Date(date, format = date.format)
-    date_of_run_compact <- format(date, "%d%m%y")
-  } else if(isTRUE(is_date(mydate = date, date.format = "%d%m%y"))){
-    date_of_run_compact <- date
-  } else {
-    stop("please enter a valid date of format dd/mm/yy")
-  }
-  return(date_of_run_compact)
-}
-
-#' Check if a compact date is present in a given string.
-#'
-#' @description Interrogate a string to determine if a compact date (%d%m%y) is present. If it is, return it. If it isn't, give NULL.
-#'
-#' @param string A string to be examined
-#'
-#' @noRd
-#
-compact_date_present <- function(string){
-  # check if a period is present in the given string.
-  periodpresent <- str_detect(string,"[.]")
-  if(isTRUE(periodpresent)){
-    string_noperiod <- unlist(strsplit(string,"[.]"))[1]
-  } else{
-    string_noperiod <- string
-  }
-  # Dismantle at spaces.
-  string_spacesep <-  unlist(strsplit(string_noperiod,"\\s+"))
-  # check for dates in project file name strings.
-  check_string_date <- is_date(mydate = string_spacesep, date.format = "%d%m%y")
-  # Getting the date from the string, if it exists. First one.
-  if(isTRUE(any(check_string_date))){
-    # So, there's a datestring.
-    string_date <- string_spacesep[first(which(check_string_date))]
-  } else {
-    # No datestring! NULL.
-    string_date <- NULL
-  }
-  string_date
-}
-
-#' Insert a single row into a dataframe.
-#'
-#' @description A less clunky row insert function than an rbind method. Shamelessy borrowed from Ari B. Friedman's response in https://stackoverflow.com/questions/11561856/add-new-row-to-dataframe-at-specific-row-index-not-appended
-#'
-#' @param df The data frame within which the row is to be inserted
-#' @param row The row to be inserted
-#' @param index the index at which the row will be inserted. All rows after will be shunted "down" 1.
-#'
-#' @noRd
-#
-insert_row <- function(df, row, index) {
-  df <- as.data.frame(df)
-  if(index <= nrow(df)){
-    df[seq(index+1,nrow(df)+1),] <- df[seq(index,nrow(df)),]
-    df[index,] <- row
-    df
-  } else if(index > nrow(df)){# check if index > nrow. If so, tack it on the end.
-    df[nrow(df)+1,] <- row
-    df
-  }
-}
-
-#' Detect and return the extension of one or more given filenames.
-#'
-#' @description Split a string at the period, and return the characters after it. In filenames (on windows at least), this is the extension, assuming nothing funky is going on.
-#'
-#' @param filenames a character string containing one or more filenames.
-#'
-#' @noRd
-#
-ext_detect <- function(filenames){
-  splits <- str_split(filenames,"[.]")
-  splits <- sapply(splits,function(x) x[length(x)])
-  ext <- splits
-  return(ext)
-}
-
-#' Get object (file or folder) names from a given directory
+#' Get object names from a given directory
 #'
 #' @description A wrapper for list.dirs and list.files. Obtains names of objects within the
 #'       specified directory.
@@ -116,7 +14,7 @@ ext_detect <- function(filenames){
 #' @param recursive list.dirs and list.files option. Should the listing recurse into directories?
 #'
 #' @export
-#
+#'
 get_names <- function(directory,
                       type = "files",
                       string = NULL,
@@ -160,6 +58,109 @@ get_names <- function(directory,
   return(names)
 }
 
+#' Check if a date is valid.
+#'
+#' @description Check if the date is valid in the format dd/mm/yy. Adapted from https://stackoverflow.com/questions/48542804/r-date-format-check
+#'
+#' @param mydate the input date.
+#' @param date.format the format to check against.
+#'
+#' @noRd
+#'
+is_date <- function(mydate, date.format = "%d/%m/%y"){
+  tryCatch(!is.na(as.Date(mydate, date.format)),
+           error = function(err) {FALSE})
+}
+
+#' Check if a date is valid, and return a compact version.
+#'
+#' @description Perform an is_date() check, and, if the date is valid under the prescribed format, return in format ddmmyy.
+#'
+#' @param date the date to convert to DDMMYY
+#' @param date.format the format of the imported date.
+#'
+#' @noRd
+#'
+date_compact <- function(date, date.format = "%d/%m/%y"){
+  if(isTRUE(is_date(mydate = date))){
+    date <- as.Date(date, format = date.format)
+    date_of_run_compact <- format(date, "%d%m%y")
+  } else if(isTRUE(is_date(mydate = date, date.format = "%d%m%y"))){
+    date_of_run_compact <- date
+  } else {
+    stop("please enter a valid date of format dd/mm/yy")
+  }
+  return(date_of_run_compact)
+}
+
+#' Check if a compact date is present in a given string.
+#'
+#' @description Interrogate a string to determine if a compact date (%d%m%y) is present. If it is, return it. If it isn't, give NULL.
+#'
+#' @param string A string to be examined
+#'
+#' @noRd
+#'
+compact_date_present <- function(string){
+  # check if a period is present in the given string.
+  periodpresent <- str_detect(string,"[.]")
+  if(isTRUE(periodpresent)){
+    string_noperiod <- unlist(strsplit(string,"[.]"))[1]
+  } else{
+    string_noperiod <- string
+  }
+  # Dismantle at spaces.
+  string_spacesep <-  unlist(strsplit(string_noperiod,"\\s+"))
+  # check for dates in project file name strings.
+  check_string_date <- is_date(mydate = string_spacesep, date.format = "%d%m%y")
+  # Getting the date from the string, if it exists. First one.
+  if(isTRUE(any(check_string_date))){
+    # So, there's a datestring.
+    string_date <- string_spacesep[first(which(check_string_date))]
+  } else {
+    # No datestring! NULL.
+    string_date <- NULL
+  }
+  string_date
+}
+
+#' Insert a single row into a dataframe.
+#'
+#' @description A less clunky row insert function than an rbind method. Shamelessy borrowed from Ari B. Friedman's response in https://stackoverflow.com/questions/11561856/add-new-row-to-dataframe-at-specific-row-index-not-appended
+#'
+#' @param df The data frame within which the row is to be inserted
+#' @param row The row to be inserted
+#' @param index the index at which the row will be inserted. All rows after will be shunted "down" 1.
+#'
+#' @noRd
+#'
+insert_row <- function(df, row, index) {
+  df <- as.data.frame(df)
+  if(index <= nrow(df)){
+    df[seq(index+1,nrow(df)+1),] <- df[seq(index,nrow(df)),]
+    df[index,] <- row
+    df
+  } else if(index > nrow(df)){# check if index > nrow. If so, tack it on the end.
+    df[nrow(df)+1,] <- row
+    df
+  }
+}
+
+#' Detect and return the extension of one or more given filenames.
+#'
+#' @description Split a string at the period, and return the characters after it. In filenames (on windows at least), this is the extension, assuming nothing funky is going on.
+#'
+#' @param filenames a character string containing one or more filenames.
+#'
+#' @noRd
+#'
+ext_detect <- function(filenames){
+  splits <- str_split(filenames,"[.]")
+  splits <- sapply(splits,function(x) x[length(x)])
+  ext <- splits
+  return(ext)
+}
+
 #' Print a tree of files or folders in the specified directory
 #'
 #' @description A cosmetic wrapper for get_names(). Prints a tree of the paths returned into the console window.
@@ -168,7 +169,7 @@ get_names <- function(directory,
 #' @param type character string string, either "files" or "folders".
 #'
 #' @noRd
-#
+#'
 object_tree <- function(directory, type = "folders"){
   ## input check type
   if((!isTRUE(type == "files")) && (!isTRUE(type == "folders"))){
@@ -204,7 +205,7 @@ object_tree <- function(directory, type = "folders"){
 #' @param strings A vector of strings/characters.
 #'
 #' @noRd
-#
+#'
 add_plurals <- function(strings){
   if(!is.character(strings)){
     stop("Please provide a character vector")
@@ -231,7 +232,7 @@ add_plurals <- function(strings){
 #' @param filnames a string containing the full file path.
 #'
 #' @noRd
-#
+#'
 trim_path <- function(filenames){
   if(length(filenames) > 1){
     it_list <- vector(mode = "list", length = length(filenames))

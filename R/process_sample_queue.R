@@ -9,7 +9,7 @@
 #' @param write_over TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?
 #'
 #' @export
-#
+#'
 process_sample_queue <- function(folder,
                                  export_dir,
                                  run_date,

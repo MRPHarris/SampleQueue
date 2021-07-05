@@ -9,7 +9,7 @@
 #' @param folder
 #'
 #' @export
-#
+#'
 generate_logfile <- function(run_sheet,
                              destination,
                              folder){
@@ -63,7 +63,7 @@ generate_logfile <- function(run_sheet,
 #' @param folder_name_short Character string: the name of the folder containing the target files, without its path.
 #'
 #' @noRd
-#
+#'
 blank_log_file <- function(datetime = NULL, folder_name_short){
   if(is.null(datetime)){
     datetime <- Sys.time()
@@ -84,7 +84,7 @@ blank_log_file <- function(datetime = NULL, folder_name_short){
 #' @param txt_file_name Character string: the short-form name (i.e. no path attached) of the above text file.
 #'
 #' @noRd
-#
+#'
 format_txt_for_log <- function(txt_file, txt_file_name){
   df <- data.frame(matrix(NA,nrow = length(txt_file),ncol = 1))
   df[,] <- txt_file
@@ -111,7 +111,7 @@ format_txt_for_log <- function(txt_file, txt_file_name){
 #' @param folder Character string: the folder containing the samples related to this run sheet. Either short or long form filename.
 #'
 #' @noRd
-#
+#'
 format_runsheet_for_log <- function(run_sheet, folder){
   # Name line
   name <- paste0("Input run sheet for ",unlist(strsplit(folder,split ="/"))[length(unlist(strsplit(folder,split = "/")))])
@@ -141,7 +141,7 @@ format_runsheet_for_log <- function(run_sheet, folder){
 #' @param txt_file_df The formatted .txt file to be attached. An output of format_txt_for_log().
 #'
 #' @noRd
-#
+#'
 append_txt_to_log <- function(log_file,txt_file_df){
   names(txt_file_df) <- names(log_file) # make sure the names are the same. Doesn't matter what they are; just have to be the same.
   log_file_app <- rbind(log_file,txt_file_df) # bind
@@ -158,7 +158,7 @@ append_txt_to_log <- function(log_file,txt_file_df){
 #' @param append_date either NULL or a date of format %d/%m/%y or %d%m%y.
 #'
 #' @noRd
-#
+#'
 save_log <- function(log_file,
                      destination,
                      name,
