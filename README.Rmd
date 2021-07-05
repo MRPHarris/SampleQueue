@@ -24,9 +24,11 @@ knitr::opts_chunk$set(
 
 The **SampleQueue** package is a streamlined set of functions that act as a file processing framework for the Horiba Aqualog spectrofluorometer's sample queuing ("SampleQ") system. During SampleQ, the Aqualog software automatically processes and corrects sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do for individual samples (such as correction for inner filter effects and Rayleigh masking). 
 
-SampleQ also avoids some of the classic pitfalls of the Aqualog's capability, including host computer processing slowdown as the user's project folder grows in size. Using an analysis configuration incorporating 88 excitation wavelength bands and all processing steps (ex240:ex500 in 3nm steps), samples each take 2:45 (165 seconds) using my lab's host computer.
+SampleQ also avoids some of the classic pitfalls of the Aqualog's capability, including host computer processing slowdown as the user's project folder grows in size. 
 
-Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention. This comprises a basic collation of prefixes/suffixes, along with sequential digits (e.g. Example001Sample0001 or Example001Blank). This package provides a workaround, allowing the user to compile complex runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and the **SampleQueue** package allows for sample throughput exceeding 100 samples per day under ideal circumstances (minimal sample pre-treatment, etc.). 
+Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention, comprising a basic combination of prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or Example001Blank). 
+
+This package provides a workaround, allowing the user to compile complex runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and the **SampleQueue** package allows for sample throughput exceeding 100 samples per day under ideal circumstances (minimal sample pre-treatment, etc.). 
 
 ## Using the SampleQueue package
 
