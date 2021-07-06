@@ -171,7 +171,7 @@ get_sqblank_folders <- function(type_folder,
 get_normal_folders <- function(type_folder,
                                filenames,
                                input_type){
-  type_rename = input_type
+  type_rename <- input_type
   type_destfolders <- get_names(directory = type_folder,
                                 type = "folders",
                                 full_names = TRUE)
@@ -217,11 +217,27 @@ get_normal_folders <- function(type_folder,
       }
       # folder should contain any of the strings in the matching types() list.
       possible_folders <- type_destfolders
+      # match folder string.
       dest_folder_short <- matching_folder(foldernames = possible_folders, possible_strings = whichtype_otherstrings)
       # which long folder matches this short one?
       long_folders <- type_destfolders
+      short_folders <- trim_path(type_destfolders)
+
+      # Matching folder/s
       match_folder <- long_folders[which(str_detect(long_folders, dest_folder_short))]
+      # is there more than one
+      if(length(match_folder) > 1){
+        # This block removes the target string from shortened versions of the multiple match folders, and identifies which one was the perfect match.
+        match_folder_short <- trim_path(match_folder)
+        stripped_strings <- str_remove(match_folder_short,dest_folder_short)
+        pure_strings <- match_folder[which(stripped_strings == "")]
+        # retain perfect match.
+        match_folder <- pure_strings
+      } else {
+        # carry on
+      }
       matching_folders[f] <- match_folder
+
     }
   }
   matching_folders

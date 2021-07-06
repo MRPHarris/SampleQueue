@@ -152,6 +152,13 @@ To get access to the functions in **SampleQueue**, simply use the
 devtools::install_github("MRPHarris/SampleQueue")
 ```
 
+## Planned revisions
+
+-   update error checking to provide more useful information in the
+    event of (1) file copy failure, and (2) project file transfers
+
+-   add handling ability for all ASCII data types.
+
 ## References
 
 Massicotte, P. (2019). eemR: Tools for Pre-Processing

@@ -42,6 +42,7 @@ create_queue_folders <- function(parent_directory,
     }
   }
   if(type == "import"){
+    l1 = 1
     dir_path_l1 = paste0(parent_directory,names(folders[1]),"/")
     dir.create(path = dir_path_l1, showWarnings = FALSE)
     # is there anything in this level?
@@ -62,10 +63,11 @@ create_queue_folders <- function(parent_directory,
     }
   }
   if(type == "export"){
-    dir_path_l1 = paste0(parent_directory,names(folders[3]),"/")
+    l1 = 2
+    dir_path_l1 = paste0(parent_directory,names(folders[2]),"/")
     dir.create(path = dir_path_l1, showWarnings = FALSE)
     # is there anything in this level?
-    if(!is.null(folders[[3]])){
+    if(!is.null(folders[[2]])){
       for(l2 in seq_along(folders[[l1]])){
         # If yes: SECOND LEVEL: SAMPLES/BLANKS/STANDARDS
         dir_path_l2 = paste0(dir_path_l1,names(folders[[l1]][l2]),"/")
@@ -105,14 +107,14 @@ default_folder_layout <- function(){
   names(SampleQueueFolders[[2]]) <- c("milliq blanks","sampleq blanks","samples","standards","project files","logs","replicates")
   # Second tier export folders
   SampleQueueFolders[[2]][["milliq blanks"]] <- folderx3
-  names(SampleQueueFolders[[2]][["milliq blanks"]]) <- c("ABS","raw EEMs","workbooks")
+  names(SampleQueueFolders[[2]][["milliq blanks"]]) <- c("ABS","PEM","workbooks")
   SampleQueueFolders[[2]][["sampleq blanks"]] <- vector(mode = "list", length = 2)
   names(SampleQueueFolders[[2]][["sampleq blanks"]]) <- c("blank files","workbooks")
   SampleQueueFolders[[2]][["samples"]] <- folderx4
-  names(SampleQueueFolders[[2]][["samples"]]) <- c("ABS","milliq blank subtracted EEMs","raw EEMs","workbooks")
+  names(SampleQueueFolders[[2]][["samples"]]) <- c("ABS","milliq blank subtracted PEM","PEM","workbooks")
   SampleQueueFolders[[2]][["standards"]] <- folderx4
-  names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","milliq blank subtracted EEMs","raw EEMs","workbooks")
+  names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","milliq blank subtracted PEM","PEM","workbooks")
   SampleQueueFolders[[2]][["replicates"]] <- folderx4
-  names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","milliq blank subtracted EEMs","raw EEMs","workbooks")
+  names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","milliq blank subtracted PEM","PEM","workbooks")
   return(SampleQueueFolders)
 }
