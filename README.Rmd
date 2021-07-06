@@ -43,7 +43,7 @@ Setting up the folder framework used by the **SampleQueue** package is performed
 In a standard workflow, the user then compiles a 'run sheet'. A run sheet is comprised of a basic table containing the predicted sample queue names, the user's own desired file names, and one of a number of supported row-file 'types' (e.g. 'sample', "mqblank", "sqblank", "standard", "replicate"). An example is shown below. Column names must match those shown in the example in order for the package to work. The "Real_Names" column can include any combination of characters or digits reflecting your desired file naming convention. The checklist column is optional - I use it whilst running samples on the Aqualog to ensure there is no chance of a mix-up during the course of an analysis. 
 
 ```{r, include = TRUE}
-data_example <- read.table(file = "data/run_sheet_example.txt", sep = "\t", header = TRUE)
+data_example <- readRDS(file = "data/run_sheet_example.rds")
 knitr::kable(data_example)
 ```
 

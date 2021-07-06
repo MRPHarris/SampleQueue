@@ -59,7 +59,7 @@ optional - I use it whilst running samples on the Aqualog to ensure
 there is no chance of a mix-up during the course of an analysis.
 
 ``` r
-data_example <- read.table(file = "data/run_sheet_example.txt", sep = "\t", header = TRUE)
+data_example <- readRDS(file = "data/run_sheet_example.rds")
 knitr::kable(data_example)
 ```
 
