@@ -7,6 +7,7 @@
 #' @param run_date Date of format dd/mm/yy on which the run was completed on the Aqualog.
 #' @param run_sheet A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.
 #' @param write_over TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?
+#' @param dry_run TRUE/FALSE to skip all file copying and return a log of all file import and export paths. Simulates a 'real' run.
 #'
 #' @export
 #'
@@ -14,15 +15,20 @@ process_sample_queue <- function(folder,
                                  export_dir,
                                  run_date,
                                  run_sheet,
-                                 write_over = TRUE){
-  # 1) create a log file, store it in the sub-folder containing "logs".
-  generate_logfile(run_sheet = run_sheet,
-                   destination = paste0(export_dir,"logs/"),
-                   folder = folder)
-  # 2) Copy and re-name the project file.
-  transfer_project_files(foldername = folder,
-                         run_date = run_date,
-                         export_directory = export_dir)
+                                 write_over = TRUE,
+                                 dry_run = TRUE){
+  if(isTRUE(dry_run)){
+    message("Dry run. Skipping log file creation and project file transfer.")
+  } else if(!isTRUE(dry_run)){
+    # 1) create a log file, store it in the sub-folder containing "logs".
+    generate_logfile(run_sheet = run_sheet,
+                     destination = paste0(export_dir,"logs/"),
+                     folder = folder)
+    # 2) Copy and re-name the project file.
+    transfer_project_files(foldername = folder,
+                           run_date = run_date,
+                           export_directory = export_dir)
+  }
   # 3) Process the import folder using a run sheet.
   file_names_full <- get_names(directory = folder,
                                type = "files",
@@ -31,8 +37,8 @@ process_sample_queue <- function(folder,
   file_names_full <- file_names_full[which(ext_detect(file_names_full) != "opj")]
   file_names_short <- trim_path(file_names_full)
   # init the file log. This will eventually be used for the blank subtraction. Now it's just... sitting there.
-  file_log <- data.frame(matrix(NA,nrow = length(file_names_full),ncol = 2))
-  colnames(file_log) <- c("exported files","type")
+  file_log <- data.frame(matrix(NA,nrow = length(file_names_full),ncol = 3))
+  colnames(file_log) <- c("imported files","exported files","type")
   fn_it_list <- vector(mode = "list", length = nrow(run_sheet))
   for(r in seq_along(fn_it_list)){
     row_it <- run_sheet[r,]
@@ -73,16 +79,21 @@ process_sample_queue <- function(folder,
         filenames_to[f] <- paste0(dest_folders[f],"/",files_to_short[f])
       }
       # Add the files to the log
-      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),1] <- filenames_to
-      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- type_it
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),1] <- filenames_from
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- filenames_to
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),3] <- type_it
       log_rowstart <- log_rowstart+(length(filenames_to))
-      # Ok, now do the file.copy call!
-      check <- file.copy(from = filenames_from, to = filenames_to, overwrite = write_over)
-      # Completion message
-      if(all(check)){
-        message("Files related to run-sheet row ",r," (",type_it,")"," were processed successfully.")
-      } else{
-        message("There was an issue copying the file/s from run sheet row ",r,".")
+      # Ok, now do the file.copy call! Or not, if it's a dry run.
+      if(!isTRUE(dry_run)){
+        check <- file.copy(from = filenames_from, to = filenames_to, overwrite = write_over)
+        # Completion message
+        if(all(check)){
+          message("Files related to run-sheet row ",r," (",type_it,")"," were processed successfully.")
+        } else{
+          message("There was an issue copying the file/s from run sheet row ",r,".")
+        }
+      } else if(isTRUE(dry_run)){
+        message("Dry run. Files related to run-sheet row ",r," (",type_it,")"," were added to the file log.")
       }
     } else if(type_it == "Sample" || type_it == "MilliQ Water Blank" || type_it == "Replicate" || type_it == "Standard"){
       ## "NORMAL" FILES
@@ -109,18 +120,25 @@ process_sample_queue <- function(folder,
         filenames_to[f] <- paste0(dest_folders[f],"/",files_to_short[f])
       }
       # Add the files to the log
-      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),1] <- filenames_to
-      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- type_it
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),1] <- filenames_from
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),2] <- filenames_to
+      file_log[c((log_rowstart):(log_rowstart+(length(filenames_to)-1))),3] <- type_it
       log_rowstart <- log_rowstart+(length(filenames_to))
-      # Ok, now do the file.copy call!
-      check <- file.copy(from = filenames_from, to = filenames_to, overwrite = write_over)
-      # Completion message
-      if(all(check)){
-        message("Files related to run-sheet row ",r," (",type_it,")"," were processed successfully.")
-      } else{
-        message("There was an issue copying the file/s from run sheet row ",r,".")
+      # Ok, now do the file.copy call! Or not, if it's a dry run.
+      if(!isTRUE(dry_run)){
+        check <- file.copy(from = filenames_from, to = filenames_to, overwrite = write_over)
+        # Completion message
+        if(all(check)){
+          message("Files related to run-sheet row ",r," (",type_it,")"," were processed successfully.")
+        } else{
+          message("There was an issue copying the file/s from run sheet row ",r,".")
+        }
+      } else if(isTRUE(dry_run)){
+        message("Dry run. Files related to run-sheet row ",r," (",type_it,")"," were added to the file log.")
       }
     }
-
+  }
+  if(isTRUE(dry_run)){
+    return(file_log)
   }
 }

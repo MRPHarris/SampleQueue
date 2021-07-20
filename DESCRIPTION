@@ -14,14 +14,16 @@ Imports:
   EEM,
   eemR,
   staRdom,
+  eemUtils,
   data.tree,
   plyr,
   DiagrammeR,
   readxl,
   xlsx
+Remotes: MRPHarris/eemUtils
 Depends: 
   R (>= 3.1),
   dplyr,
   lubridate,
-  stringr,
+  stringr
 RoxygenNote: 7.1.1

@@ -152,6 +152,13 @@ To get access to the functions in **SampleQueue**, simply use the
 devtools::install_github("MRPHarris/SampleQueue")
 ```
 
+**SampleQueue** has a number of package dependencies. These extend from
+string handling (e.g. stringr) to a number of packages required for
+blank subtraction (eemR and staRdom). Check the
+[DESCRIPTION](DESCRIPTION) file for a list of the dependencies. They
+should all be fetched automatically when you install and load
+**SampleQueue**
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
