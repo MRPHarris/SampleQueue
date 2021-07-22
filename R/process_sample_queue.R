@@ -146,7 +146,7 @@ process_sample_queue <- function(folder,
     if(isTRUE(mqblank_sub)){
       # What are the types of samples in the log?
       mqblank_subtract_PEM(log_file = file_log,
-                           neg_to_NA = TRUE)
+                           neg_to_0 = TRUE)
     }
   }
   if(isTRUE(dry_run)){
