@@ -9,7 +9,9 @@ process_sample_queue(
   export_dir,
   run_date,
   run_sheet,
-  write_over = TRUE
+  write_over = TRUE,
+  mqblank_sub = TRUE,
+  dry_run = FALSE
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ process_sample_queue(
 \item{run_sheet}{A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.}
 
 \item{write_over}{TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?}
+
+\item{mqblank_sub}{TRUE/FALSE. Imports sample types and subtracts an average of all milli-q blanks in the run from each. Exports .csv outputs to the "blank subtracted PEM" folder in each sample type folder.}
+
+\item{dry_run}{TRUE/FALSE to skip all file copying and return a log of all file import and export paths. Simulates a 'real' run.}
 }
 \description{
 Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files().

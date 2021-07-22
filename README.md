@@ -9,8 +9,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The **SampleQueue** package is a streamlined set of functions that act
-as a file processing framework for the Horiba Aqualog
+The **SampleQueue** package is a streamlined file processing/handling
+framework for the Horiba
+[Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/)
 spectrofluorometer’s sample queuing (“SampleQ”) system. During SampleQ,
 the Aqualog software automatically processes and corrects sample data
 based upon pre-set parameters, rapidly performing tasks that would
@@ -24,39 +25,41 @@ project folder grows in size.
 Unfortunately, the SampleQ system only outputs files using a restrictive
 file naming convention, comprising a basic combination of
 prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or
-Example001Blank).
+Example001Blank). This makes managing outputs extremely cumbersome.
 
 This package provides a workaround, allowing the user to compile complex
 runs using SampleQ via the creation of a ‘run sheet’, in a fashion that
 should be familiar to users of other scientific instruments. Even using
 run setups incorporating multiple blanks, standards and replicates, the
-combination of SampleQ and the **SampleQueue** package allows for sample
-throughput exceeding 100 samples per day under ideal circumstances
-(minimal sample pre-treatment, etc.).
+combination of SampleQ and **SampleQueue** allows for rapid sample
+throughput, followed by easy management of the resulting data files.
+
+##### A quick note on ASCII data types
+
+At present **SampleQueue** supports the Processed
+Excitation-Emission-Matrix (PEM) and Absorbance (ABS) ASCII .dat file
+types. See ‘Supported file and data types’ below. Support for more file
+types will be added shortly.
 
 ## Using the SampleQueue package
 
-The basic logic comprising the **SampleQueue** package workflow is
-illustrated below.
+The basic logic comprising the **SampleQueue** workflow is illustrated
+below.
 
 <p align="center">
 <img src="man/figures/workflow example v1.png" height="850px" />
 </p>
 
-Setting up the folder framework used by the **SampleQueue** package is
-performed by choosing a parent directory and running
-`create_queue_folders()`.
+Setting up the folder framework used by **SampleQueue** is performed by
+choosing a parent directory and running `create_queue_folders()`. This
+will fill that folder with all the sub-directories used by the package.
 
 In a standard workflow, the user then compiles a ‘run sheet’. A run
-sheet is comprised of a basic table containing the predicted sample
-queue names, the user’s own desired file names, and one of a number of
-supported row-file ‘types’ (e.g. ‘sample’, “mqblank”, “sqblank”,
-“standard”, “replicate”). An example is shown below. Column names must
-match those shown in the example in order for the package to work. The
-“Real\_Names” column can include any combination of characters or digits
-reflecting your desired file naming convention. The checklist column is
-optional - I use it whilst running samples on the Aqualog to ensure
-there is no chance of a mix-up during the course of an analysis.
+sheet is comprised of a basic table containing a given run’s sample
+queue names (i.e. the naming convention that will be used by the Aqualog
+during analysis), the user’s own desired file names, and one of a number
+of supported row-file ‘types’ (e.g. ‘sample’, “mqblank”, “sqblank”,
+“standard”, “replicate”). An example is shown below.
 
 ``` r
 data_example <- readRDS(file = "data/run_sheet_example.rds")
@@ -77,18 +80,28 @@ knitr::kable(data_example)
 |    10 |         1 | Example0001Sample0019 | Sample\_1\_re        | replicate | NA        |
 |    11 |         0 | Example0001Sample0020 | mqblank\_050721c     | mqblank   | NA        |
 
+Column names must match those shown in the example in order for the
+package to work. The “Real\_Names” column can include any combination of
+characters or digits reflecting your desired file naming convention. The
+‘types’ determine categorisation and file sorting - for example, files
+associated with run sheet rows marked ‘standard’ will be sorted and sent
+to the standards folder. The checklist column is optional - I use it
+whilst running samples on the Aqualog to ensure there is no chance of a
+mix-up during the course of an analysis.
+
 Once analysis using SampleQ on the Aqualog is completed, the user
-collates the files together in a folder with any project (.opj) and text
-files (.txt) into a single folder, and moves this folder to the
-**SampleQueue** import directory.
+collates the files together in a single folder along with any project
+(.opj) and text files (.txt). This folder should then be placed into to
+the **SampleQueue** import directory.
 
 After this, running the function `process_sample_queue()` with the
 appropriate parameter inputs (correct run sheet, etc.) will
 automatically rename and copy all the files to the appropriate folders
-within the **SampleQueue** export folder.
+within the **SampleQueue** export folder. An option is included for
+milli-q blank subtraction.
 
 After running a **SampleQueue** workflow, the user should be left with a
-collection of appropriately named and catalogued files that can then be
+collection of appropriately named and sorted files that can then be
 indexed and interrogated with the existing R fluorescence analysis
 framework provided chiefly by the
 [eemR](https://cran.r-project.org/web/packages/eemR/index.html),
@@ -110,11 +123,14 @@ The following file types are extracted from the designated folder by the
 Text files are collated together using the `generate_logfile()`
 function. This operates by identifying all the text files in the
 specified folder, importing them with `readLines()`, then combining them
-together into a ‘log file’. The run sheet is also appended. Typically
-.txt files in the imported folder will be limited to the
-Aqualog-produced log (AqualogSampleQLog.txt), but any user-generated
+together into a ‘log file’. The run sheet is also appended during this
+process. Typically .txt files in the imported folder will be limited to
+the Aqualog-produced log (AqualogSampleQLog.txt), but any user-generated
 .txt files will also be included provided they are in the same folder as
-all the other data files.
+all the other data files. I typically include a small text file that
+contains my notes about the run and the calibration values used at the
+time of run, including the normalisation value (e.g. RU norm factor, QSU
+norm factor).
 
 ### .opj project files
 
@@ -131,17 +147,18 @@ running the Aqualog sample queue, their chosen folder will be populated
 with .ogw workbook files for each sample/blank. These files can be
 loaded back into the Aqualog software to track all processing steps for
 each file. As with the ASCII .dat files, each .ogw file is copied
-(renamed) to a suitable export folder matching the sample type.
+(renamed in line with the run sheet) to an export folder matching the
+sample type.
 
 ### ASCII .dat files
 
 Depending on user choices during the SampleQ setup process on the
 Aqualog, a number of different ASCII file types will be exported by the
 system for each sample during analysis. All ASCII files have the .dat
-file extension. The current version of the **SampleQueue** package
-supports the ABS (absorbance data) and PEM (sample-blank processed XYY)
-ASCII data types. The others (e.g. % transmission PCT, blank XYY BEM)
-will be added in a subsequent release.
+file extension. The current version of **SampleQueue** supports the ABS
+(absorbance data) and PEM (sample-blank processed XYY) ASCII data types.
+The others (e.g. % transmission PCT, blank XYY BEM) will be added in a
+subsequent release.
 
 ## Installation
 
@@ -154,17 +171,20 @@ devtools::install_github("MRPHarris/SampleQueue")
 
 **SampleQueue** has a number of package dependencies. These extend from
 string handling (e.g. stringr) to a number of packages required for
-blank subtraction (eemR and staRdom). Check the
+blank subtraction
+([eemR](https://cran.r-project.org/web/packages/eemR/index.html),
+[staRdom](https://github.com/MatthiasPucher/staRdom), and my own package
+[eemUtils](https://github.com/MRPHarris/eemUtils)). Check the
 [DESCRIPTION](DESCRIPTION) file for a list of the dependencies. They
-should all be fetched automatically when you install and load
-**SampleQueue**
+should all (hopefully) be fetched automatically when you install and
+load **SampleQueue**.
 
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
     event of (1) file copy failure, and (2) project file transfers
 
--   add handling ability for all ASCII data types.
+-   add handling for all ASCII data types.
 
 ## References
 

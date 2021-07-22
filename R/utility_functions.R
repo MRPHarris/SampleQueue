@@ -250,3 +250,371 @@ trim_path <- function(filenames){
     message("Empty object; no path to trim.")
   }
 }
+
+
+#' Read multiple Aqualog eem .dat files. An unwrapped version of eemR::eem_read targeted specifically at Aqualog .dat files, with simple multiple-file handling.
+#'
+#' @description Read multiple Aqualog .dat PEM files into an EEM/eemR/staRdom compliant eemlist object. Directories not supported.
+#'
+#' @importFrom tools file_path_sans_ext
+#'
+#' @param file one or more long filenames (i.e. path included) of ASCII .dat PEM files from an Aqualog.
+#'
+#' @noRd
+#'
+eem_read_mod <- function (file){
+  # This import function is eemR's eem_import_aqualog.
+  f <- function(file) {
+    data <- readLines(file)
+
+    eem <- stringr::str_extract_all(data, "-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?")
+
+    ex <- sort(as.numeric(eem[[1]]))
+
+    n_col <- lapply(eem, length)
+    n_col <- unlist(n_col)
+    expected_col <- as.numeric(names(sort(-table(n_col)))[1])
+
+    eem[n_col != expected_col] <- NULL
+    eem <- lapply(eem, as.numeric)
+    eem <- do.call(rbind, eem)
+
+    em <- eem[, 1]
+    eem <- eem[, -1]
+    eem <- as.matrix(eem[, ncol(eem):1])
+
+    l <- list(
+      file = file,
+      x = eem,
+      em = em,
+      ex = ex
+    )
+
+    return(l)
+  }
+  # This is the eem constructor from eemR.
+  eemf <- function(data) {
+    if (!all(c("file", "x", "em", "ex") %in% names(data))) {
+      stop("Your custom function should return a named list with four components: file, x, ex, em")
+    }
+    res <- list(
+      file = data$file,
+      sample = ifelse(
+        is.null(data$sample),
+        file_path_sans_ext(basename(data$file)),
+        data$sample
+      ),
+      x = data$x,
+      ex = data$ex,
+      em = data$em,
+      location = dirname(data$file)
+    )
+    class(res) <- "eem"
+    attr(res, "is_blank_corrected") <- FALSE
+    attr(res, "is_scatter_corrected") <- FALSE
+    attr(res, "is_ife_corrected") <- FALSE
+    attr(res, "is_raman_normalized") <- FALSE
+    return(res)
+  }
+  # multiple file handling
+  if(length(file) > 1){
+    # eemlist init
+    eemlist_add <- vector(mode = "list", length = length(file))
+    class(eemlist_add) <- "eemlist"
+    # Loop for eem processing and addition to eemlist_add
+    for(i in seq_along(eemlist_add)){
+      # get file for this iteration
+      file_it <- file[i]
+      # stop ifs
+      stopifnot(file.exists(file_it))
+      # Directory checking. Unsure how this section will integrate with the loop to be honest.
+      #isdir <- file.info(file_it)$isdir
+      #if (isdir) {
+      #  file_it <- list.files(file_it, full.names = TRUE, recursive = recursive,
+      #                        no.. = TRUE, include.dirs = FALSE, pattern = "*.txt|*.dat|*.csv",
+      #                        ignore.case = TRUE)
+      #  file_it <- file_it[!file.info(file_it)$isdir]
+      #}
+      # Now do function application, etc.
+      res <- lapply(file_it, f) # this applies the import function to the file.
+      res <- lapply(res, eemf) # this applies the eem constructor
+      res <- unlist(res, recursive = FALSE)
+      class(res) <- "eem"
+      res[unlist(lapply(res, is.null))] <- NULL # Remnoves unreadable EEMs.
+      eemlist_add[[i]] <- res
+    }
+    return(eemlist_add)
+  } else if(length(file) == 1){
+    # stop if
+    stopifnot(file.exists(file))
+    # removing directory handling
+    #isdir <- file.info(file)$isdir
+    #if (isdir) {
+    #  file <- list.files(file, full.names = TRUE, recursive = recursive,
+    #                     no.. = TRUE, include.dirs = FALSE, pattern = "*.txt|*.dat|*.csv",
+    #                     ignore.case = TRUE)
+    #  file <- file[!file.info(file)$isdir]
+    #}
+    res <- lapply(file, f) # this applies the import function to the file.
+    res <- lapply(res, eemf) # this applies the eem constructor
+    class(res) <- "eemlist"
+    res[unlist(lapply(res, is.null))] <- NULL # Remnoves unreadable EEMs.
+    return(res)
+  } else if(length(file) < 1){
+    stop("Files parameter is empty; no files to read.")
+  }
+}
+
+#' Set all negative values within a group of EEMs to 0.
+#'
+#' @description Negative fluorescence is not possible, and typically indicates
+#'        bad processing, noise, or artefacts. This function will set all negative
+#'        values within one or more EEMs to 0.
+#'
+#' @param eemlist A list of EEMs in a format compliant with eemR/staRdom.
+#' @param outputfolder optional; either NULL or a path to the folder where the new eemlist will be sent.
+#'
+#' @noRd
+#'
+eemlist_neg_to_0 <- function(eemlist, outputfolder = NULL){
+  EEMs_NoNeg <- vector(mode = "list", length = length(eemlist))
+  class(EEMs_NoNeg) <- "eemlist"
+  for(i in seq_along(EEMs_NoNeg)){                                         # main for loop
+    eem_it <- eemlist[[i]]
+    file_it <- eem_it[['file']]
+    sample_it <- eem_it[['sample']]
+    location_it <- eem_it[['location']]
+    eem_ungathered <- as.data.frame(eem_it, gather = FALSE)       # extract EEM, don't gather
+    eem_ungathered[,][eem_ungathered[,] <0] <- 0                        # set all values less than 0 in EEM to 0
+    eem_df <- eemdf_to_eem(eemdf = eem_ungathered,
+                           file = file_it,
+                           sample = sample_it,
+                           location = location_it)
+    class(eem_df) <- "eem"
+    EEMs_NoNeg[[i]] <- eem_df
+    if(!is.null(outputfolder)){
+      write.csv(eem_ungathered, file = paste0(outputfolder,EEMs_NoNeg[[i]][["sample"]],"_noneg.csv"), row.names = TRUE) # Export EEM with iterative naming scheme.
+    }
+  }
+  return(EEMs_NoNeg)
+}
+
+#' Set all negative values within a group of EEMs to 0.
+#'
+#' @description Negative fluorescence is not possible, and typically indicates
+#'        bad processing, noise, or artefacts. This function will set all negative
+#'        values within one or more EEMs to 0.
+#'
+#' @param eemlist A list of EEMs in a format compliant with eemR/staRdom.
+#' @param outputfolder optional; either NULL or a path to the folder where the new eemlist will be sent.
+#'
+#' @noRd
+#'
+eem_neg_to_0 <- function(eem, outputfolder = NULL){
+  file_it <- eem[['file']]
+  sample_it <- eem[['sample']]
+  location_it <- eem[['location']]
+  eem_ungathered <- as.data.frame(eem, gather = FALSE)       # extract EEM, don't gather
+  eem_ungathered[,][eem_ungathered[,] <0] <- 0                        # set all values less than 0 in EEM to 0
+  eem_new <- eemdf_to_eem(eemdf = eem_ungathered,
+                          file = file_it,
+                          sample = sample_it,
+                          location = location_it)
+  class(eem_new) <- "eem"
+  if(!is.null(outputfolder)){
+    write.csv(eem_ungathered, file = paste0(outputfolder,eem[['sample']],"_noneg.csv"), row.names = TRUE) # Export EEM with iterative naming scheme.
+  }
+  return(eem_new)
+}
+
+
+#' Average a set of EEMs.
+#'
+#' @description Take a set of EEMs and average them together. The EEMs must be the same size.
+#'
+#' @param eemlist A list of EEMs in a format compliant with eemR/staRdom.
+#'
+#' @noRd
+#'
+average_eems <- function(eemlist){
+  if(length(eemlist) == 1){
+    message("1 EEM passed to average_eems() for averaging. Returning unchanged.")
+    new_eemlist <- eemlist
+    return(new_eemlist)
+  } else if(length(eemlist) > 1){
+    ungathered_list <- vector(mode = "list",length = length(eemlist))
+    for(i in seq_along(eemlist)){
+      eem_it <- eemlist[[i]]
+      file_it <- eem_it[['file']]
+      sample_it <- eem_it[['sample']]
+      location_it <- eem_it[['location']]
+      eem_ungathered <- as.data.frame(eemlist[[i]], gather = FALSE)       # extract EEM, don't gather
+      ungathered_list[[i]] <- eem_ungathered
+    }
+    # Average it
+    averaged <- Reduce("+",ungathered_list)/length(ungathered_list)
+    # Now back to eem
+    averaged_eem <- eemdf_to_eem(averaged,
+                                 file = "",
+                                 sample = "averaged_eem",
+                                 location = "")
+    new_eemlist <- vector(mode = "list",length = 1)
+    class(new_eemlist) <- "eemlist"
+    message(paste0(length(eemlist)," EEMs passed to average_eems() for averaging."))
+    new_eemlist[[1]] <- averaged_eem
+    return(new_eemlist)
+  }
+
+}
+
+#' Takes a data frame and attempts to coerce it to an EEM object of the style used by EEM/eemR/staRdom.
+#'
+#' @description An alternative to eemR's eem constructor.
+#'
+#' @param eemdf the dataframe to be coerced to an EEM object.
+#' @param file filename of the EEM, if applicable.
+#' @param sample the samplename of the EEM, if applicable.
+#' @param location the location of the EEM file, if applicable.
+#'
+#'@noRd
+eemdf_to_eem <- function(eemdf,
+                         file,
+                         sample,
+                         location){
+  # code adapted from staRdom's .eem_csv importer.
+  x <- eemdf
+  ex <- colnames(x)[] %>% as.numeric()
+  em <- rownames(x) %>% as.numeric()
+  x <- x[,] %>% as.matrix() %>% unname()
+  x <- x[!is.na(em),!is.na(ex)]
+  ex <- ex[!is.na(ex)]
+  em <- em[!is.na(em)]
+  l <- list(
+    file = file,
+    sample = sample,
+    x = x,
+    ex = ex,
+    em = em,
+    location = location
+  )
+  class(l) <- "eem"
+  return(l)
+}
+
+#' Subtracts one eem (the subtrahend) from an eemlist (the minuends).
+#'
+#' @description A function for subtracting one eem from multiple other eems. For use in blank subtraction. All eems must be of matching dimensions
+#'
+#' @param eems_minuend an eemR/staRdom compliant eemlist object.
+#' @param eem_subtrahend a single eem (not an eemlist) to be used as the subtrahend during subtraction.
+#'
+#'@noRd
+#'
+eemlist_subtract <- function(eems_minuend,
+                             eem_subtrahend){
+  ## input checks
+  if(class(eems_minuend) != "eemlist"){
+    stop("object eems_minuend must be of class eemlist")
+  }
+  if(class(eem_subtrahend) == "eemlist"){
+    eem_subtrahend = eem_subtrahend[[1]] # Pull out just the eem.
+  }
+  ## new eemlist to add processed eems to.
+  eemlist_sub <- vector(mode = "list", length = length(eems_minuend))
+  class(eemlist_sub) <- "eemlist"
+  ## coerce subtrahend to data.frame
+  eem_subtrahend_df = as.data.frame(eem_subtrahend, gather = FALSE)
+  ## Main subtraction loop
+  for(e in seq_along(eems_minuend)){
+    ## coerce minuend for this iteration to data frame.
+    eem_minuend_it <- eems_minuend[[e]]
+    eem_minuend_df_it <- as.data.frame(eem_minuend_it, gather = FALSE)
+    ## check that the dimensions are the same.
+    if(!isTRUE(nrow(eem_minuend_df_it) == nrow(eem_subtrahend_df) & ncol(eem_minuend_df_it) == ncol(eem_subtrahend_df))){
+      stop("EEMs minuend and subtrahend are of differing dimensions.")
+    }
+    ## FEATURE UPDATE: ADD extend2largest() OPTION HERE
+    ## Subtraction
+    eem_minuend_df_new <- eem_minuend_df_it - eem_subtrahend_df
+    ## Return to eem class object
+    eem_minuend_new <- eemdf_to_eem(eemdf = eem_minuend_df_new,
+                                    file = eem_minuend_it[['file']],
+                                    sample = eem_minuend_it[['sample']],
+                                    location = eem_minuend_it[['location']])
+    ## Add processed eem from this iteration to the new eemlist
+    eemlist_sub[[e]] <- eem_minuend_new
+  }
+  return(eemlist_sub)
+}
+
+#' Subtract milliq blanks from applicable samples using the internal log file.
+#'
+#' @description A collation and export wrapper for eemlist_subtract(). Used within process_sample_queue for blank subtraction and export.
+#'
+#' @param log_file the internal log data frame generated by process_sample_queue, documenting file locations and sample types.
+#' @param neg_to_NA TRUE/FALSE to use eem_neg_to_NA on blank-subtracted EEM files prior to export. Defaults to TRUE.
+#'
+#'@noRd
+#'
+mqblank_subtract_PEM <- function(log_file,
+                                 neg_to_NA = TRUE){
+  log <- log_file
+  # Initial trimming
+  log <- log[-which(log$type == "Sample Queue Blank"),] # sqblank exclusion
+  log_extensions <- ext_detect(log$`exported files`)
+  log <- log[-which(log_extensions == "ogw"),] # workbook exclusion
+  # Select for the PEM files.
+  stripped_export_files <- trim_path(log$`exported files`)
+  stripped_export_files <- unlist(strsplit(stripped_export_files,"[.]"))
+  stripped_export_files <- stripped_export_files[-which(stripped_export_files == "dat")]
+  types <- unlist(lapply(stripped_export_files,ASCII_data_type))
+  log_PEM <- log[which(types == "PEM"),]
+  # logs
+  PEM_mqblank_log <- log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]
+  PEM_sample_log <- log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]
+  # filenames
+  PEM_mqblanks <- as.character(log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]$`exported files`)
+  PEM_samples <- as.character(log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]$`exported files`)
+  # Average the blank EEMs.
+  blank_eemlist <- eem_read_mod(file = PEM_mqblanks)
+  blank_eemlist <- average_eems(eemlist = blank_eemlist)
+  blank_eem <- blank_eemlist[[1]]
+  ## New code
+  #Iterating along sample types, doing the work on each in turn.
+  sample_types <- unique(PEM_sample_log$type)
+  type_itlist <- vector(mode = "list", length = length(sample_types))
+  for(t in seq_along(type_itlist)){
+    # sample type for this iteration
+    type_it <- sample_types[t]
+    # sample details from log
+    PEM_samples_it_log <- PEM_sample_log[which(PEM_sample_log$type == type_it),]
+    PEM_samples_it <- as.character(PEM_samples_it_log$`exported files`)
+    # get the sample names for future use.
+    names_short <- trim_path(PEM_samples_it)
+    names_short_noext <- sapply(strsplit(names_short,"[.]"), "[[", 1)
+    # folder for this type
+    type_folder <- strsplit(PEM_samples_it_log$`exported files`,"/")[[1]]
+    parent_typefolder <- paste0(paste(type_folder[1:(length(strsplit(PEM_samples_it_log$`exported files`,"/")[[1]])-2)],collapse = "/"),"/")
+    # long and short folder names within the parent type folder.
+    parent_fnames <- get_names(parent_typefolder,type = "folders")
+    parent_fnames_short <- trim_path(parent_fnames)
+    target_folder <- paste0(parent_fnames[which(str_detect(parent_fnames_short,"blank subtracted") == TRUE)],"/")
+
+    # get the samples for this type.
+    sample_eemlist <- eem_read_mod(file = PEM_samples_it)
+    # perform subtraction
+    eems_subtracted <- eemlist_subtract(eems_minuend = sample_eemlist,
+                                        eem_subtrahend = blank_eem)
+    ## negative to NA, if specified.
+    if(isTRUE(neg_to_NA)){
+      eems_subtracted <- eemlist_neg_to_0(eems_subtracted)
+    }
+    ## export for this type
+    message("Saving blank-subtracted EEMs for type: ",type_it)
+    eemUtils::save_eemlist_csvs(eemlist = eems_subtracted,
+                                outputfolder = target_folder)
+    ## FOR RESUME: REPLICATES AND STANDARDS ARE EXPORTING TO THE SAMPLE DIRECTORY
+
+  }
+  return(eems_subtracted)
+}

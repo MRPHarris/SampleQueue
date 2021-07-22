@@ -7,6 +7,7 @@
 #' @param run_date Date of format dd/mm/yy on which the run was completed on the Aqualog.
 #' @param run_sheet A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.
 #' @param write_over TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?
+#' @param mqblank_sub TRUE/FALSE. Imports sample types and subtracts an average of all milli-q blanks in the run from each. Exports .csv outputs to the "blank subtracted PEM" folder in each sample type folder.
 #' @param dry_run TRUE/FALSE to skip all file copying and return a log of all file import and export paths. Simulates a 'real' run.
 #'
 #' @export
@@ -16,7 +17,8 @@ process_sample_queue <- function(folder,
                                  run_date,
                                  run_sheet,
                                  write_over = TRUE,
-                                 dry_run = TRUE){
+                                 mqblank_sub = TRUE,
+                                 dry_run = FALSE){
   if(isTRUE(dry_run)){
     message("Dry run. Skipping log file creation and project file transfer.")
   } else if(!isTRUE(dry_run)){
@@ -134,8 +136,17 @@ process_sample_queue <- function(folder,
           message("There was an issue copying the file/s from run sheet row ",r,".")
         }
       } else if(isTRUE(dry_run)){
+        # completion message for dry run.
         message("Dry run. Files related to run-sheet row ",r," (",type_it,")"," were added to the file log.")
       }
+    }
+  }
+  # Blank subtraction
+  if(!isTRUE(dry_run)){
+    if(isTRUE(mqblank_sub)){
+      # What are the types of samples in the log?
+      mqblank_subtract_PEM(log_file = file_log,
+                           neg_to_NA = TRUE)
     }
   }
   if(isTRUE(dry_run)){
