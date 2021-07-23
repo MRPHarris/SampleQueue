@@ -326,63 +326,65 @@ ASCII_data_type <- function(filename){
 mqblank_subtract_PEM <- function(log_file,
                                  neg_to_0 = TRUE){
   log <- log_file
-  # Initial trimming
-  log <- log[-which(log$type == "Sample Queue Blank"),] # sqblank exclusion
-  log_extensions <- ext_detect(log$`exported files`)
-  log <- log[-which(log_extensions == "ogw"),] # workbook exclusion
-  # Select for the PEM files.
-  stripped_export_files <- trim_path(log$`exported files`)
-  stripped_export_files <- unlist(strsplit(stripped_export_files,"[.]"))
-  stripped_export_files <- stripped_export_files[-which(stripped_export_files == "dat")]
-  types <- unlist(lapply(stripped_export_files,ASCII_data_type))
-  log_PEM <- log[which(types == "PEM"),]
-  # logs
-  PEM_mqblank_log <- log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]
-  PEM_sample_log <- log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]
-  # filenames
-  PEM_mqblanks <- as.character(log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]$`exported files`)
-  PEM_samples <- as.character(log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]$`exported files`)
-  # Average the blank EEMs.
-  blank_eemlist <- eem_read_mod(file = PEM_mqblanks)
-  blank_eemlist <- average_eems(eemlist = blank_eemlist)
-  blank_eem <- blank_eemlist[[1]]
-  ## New code
-  #Iterating along sample types, doing the work on each in turn.
-  sample_types <- unique(PEM_sample_log$type)
-  type_itlist <- vector(mode = "list", length = length(sample_types))
-  for(t in seq_along(type_itlist)){
-    # sample type for this iteration
-    type_it <- sample_types[t]
-    # sample details from log
-    PEM_samples_it_log <- PEM_sample_log[which(PEM_sample_log$type == type_it),]
-    PEM_samples_it <- as.character(PEM_samples_it_log$`exported files`)
-    # get the sample names for future use.
-    names_short <- trim_path(PEM_samples_it)
-    names_short_noext <- sapply(strsplit(names_short,"[.]"), "[[", 1)
-    # folder for this type
-    type_folder <- strsplit(PEM_samples_it_log$`exported files`,"/")[[1]]
-    parent_typefolder <- paste0(paste(type_folder[1:(length(strsplit(PEM_samples_it_log$`exported files`,"/")[[1]])-2)],collapse = "/"),"/")
-    # long and short folder names within the parent type folder.
-    parent_fnames <- get_names(parent_typefolder,type = "folders")
-    parent_fnames_short <- trim_path(parent_fnames)
-    target_folder <- paste0(parent_fnames[which(str_detect(parent_fnames_short,"blank subtracted") == TRUE)],"/")
+  if(!isTRUE(any(log$type == "MilliQ Water Blank"))){
+    message("No milliq blanks. Skipping blank subtraction.")
+  } else {
+    # Initial trimming
+    log <- log[-which(log$type == "Sample Queue Blank"),] # sqblank exclusion
+    log_extensions <- ext_detect(log$`exported files`)
+    log <- log[-which(log_extensions == "ogw"),] # workbook exclusion
+    # Select for the PEM files.
+    stripped_export_files <- trim_path(log$`exported files`)
+    stripped_export_files <- unlist(strsplit(stripped_export_files,"[.]"))
+    stripped_export_files <- stripped_export_files[-which(stripped_export_files == "dat")]
+    types <- unlist(lapply(stripped_export_files,ASCII_data_type))
+    log_PEM <- log[which(types == "PEM"),]
+    # logs
+    PEM_mqblank_log <- log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]
+    PEM_sample_log <- log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]
+    # filenames
+    PEM_mqblanks <- as.character(log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]$`exported files`)
+    PEM_samples <- as.character(log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]$`exported files`)
+    # Average the blank EEMs.
+    blank_eemlist <- eem_read_mod(file = PEM_mqblanks)
+    blank_eemlist <- average_eems(eemlist = blank_eemlist)
+    blank_eem <- blank_eemlist[[1]]
+    ## New code
+    #Iterating along sample types, doing the work on each in turn.
+    sample_types <- unique(PEM_sample_log$type)
+    type_itlist <- vector(mode = "list", length = length(sample_types))
+    for(t in seq_along(type_itlist)){
+      # sample type for this iteration
+      type_it <- sample_types[t]
+      # sample details from log
+      PEM_samples_it_log <- PEM_sample_log[which(PEM_sample_log$type == type_it),]
+      PEM_samples_it <- as.character(PEM_samples_it_log$`exported files`)
+      # get the sample names for future use.
+      names_short <- trim_path(PEM_samples_it)
+      names_short_noext <- sapply(strsplit(names_short,"[.]"), "[[", 1)
+      # folder for this type
+      type_folder <- strsplit(PEM_samples_it_log$`exported files`,"/")[[1]]
+      parent_typefolder <- paste0(paste(type_folder[1:(length(strsplit(PEM_samples_it_log$`exported files`,"/")[[1]])-2)],collapse = "/"),"/")
+      # long and short folder names within the parent type folder.
+      parent_fnames <- get_names(parent_typefolder,type = "folders")
+      parent_fnames_short <- trim_path(parent_fnames)
+      target_folder <- paste0(parent_fnames[which(str_detect(parent_fnames_short,"blank subtracted") == TRUE)],"/")
 
-    # get the samples for this type.
-    sample_eemlist <- eem_read_mod(file = PEM_samples_it)
-    # perform subtraction
-    eems_subtracted <- eemlist_subtract(eems_minuend = sample_eemlist,
-                                        eem_subtrahend = blank_eem)
-    ## negative to NA, if specified.
-    if(isTRUE(neg_to_0)){
-      eems_subtracted <- eemlist_neg_to_0(eems_subtracted)
+      # get the samples for this type.
+      sample_eemlist <- eem_read_mod(file = PEM_samples_it)
+      # perform subtraction
+      eems_subtracted <- eemlist_subtract(eems_minuend = sample_eemlist,
+                                          eem_subtrahend = blank_eem)
+      # negative to NA, if specified.
+      if(isTRUE(neg_to_0)){
+        eems_subtracted <- eemlist_neg_to_0(eems_subtracted)
+      }
+      # export for this type
+      message("Saving blank-subtracted EEMs for type: ",type_it)
+      eemUtils::save_eemlist_csvs(eemlist = eems_subtracted,
+                                  outputfolder = target_folder)
     }
-    ## export for this type
-    message("Saving blank-subtracted EEMs for type: ",type_it)
-    eemUtils::save_eemlist_csvs(eemlist = eems_subtracted,
-                                outputfolder = target_folder)
-    ## FOR RESUME: REPLICATES AND STANDARDS ARE EXPORTING TO THE SAMPLE DIRECTORY
-
+    return(eems_subtracted)
   }
-  return(eems_subtracted)
 }
 

@@ -34,7 +34,7 @@ run setups incorporating multiple blanks, standards and replicates, the
 combination of SampleQ and **SampleQueue** allows for rapid sample
 throughput, followed by easy management of the resulting data files.
 
-##### A quick note on ASCII data types
+#### A quick note on ASCII data types
 
 At present **SampleQueue** supports the Processed
 Excitation-Emission-Matrix (PEM) and Absorbance (ABS) ASCII .dat file
@@ -160,6 +160,12 @@ file extension. The current version of **SampleQueue** supports the ABS
 The others (e.g. % transmission PCT, blank XYY BEM) will be added in a
 subsequent release.
 
+## OS Compatibility
+
+The underlying code used for file management (copying, renaming) in
+**SampleQueue** was written using on a machine running Windows. The
+package has not been tested on Mac or Linux.
+
 ## Installation
 
 To get access to the functions in **SampleQueue**, simply use the
@@ -178,6 +184,13 @@ blank subtraction
 [DESCRIPTION](DESCRIPTION) file for a list of the dependencies. They
 should all (hopefully) be fetched automatically when you install and
 load **SampleQueue**.
+
+## Update Notes
+
+22/07/21 \| SampleQueue is now fully functional!
+
+23/07/21 \| Fixed a bug wherein attempting blank subtraction on a run
+that contained no blanks resulted in an error.
 
 ## Planned revisions
 
