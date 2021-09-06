@@ -11,6 +11,8 @@ process_sample_queue(
   run_sheet,
   write_over = TRUE,
   mqblank_sub = TRUE,
+  dilution_process = TRUE,
+  neg_to_0 = TRUE,
   dry_run = FALSE
 )
 }
@@ -27,8 +29,12 @@ process_sample_queue(
 
 \item{mqblank_sub}{TRUE/FALSE. Imports sample types and subtracts an average of all milli-q blanks in the run from each. Exports .csv outputs to the "blank subtracted PEM" folder in each sample type folder.}
 
+\item{dilution_process}{TRUE/FALSE where dilution factor values are given in the run sheet, perform a corresponding multiplication to the fluorescence intensity values of those EEMs. Defaults to TRUE.}
+
+\item{neg_to_0}{TRUE/FALSE to set all instances of negative fluorescence in EEMs to 0 prior to export. Defaults to TRUE.}
+
 \item{dry_run}{TRUE/FALSE to skip all file copying and return a log of all file import and export paths. Simulates a 'real' run.}
 }
 \description{
-Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files().
+Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files(). Options for simple post-processing (e.g. blank subtraction)
 }

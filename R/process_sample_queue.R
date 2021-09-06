@@ -1,6 +1,6 @@
 #' Rename and collate Aqualog sample queue output files.
 #'
-#' @description Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files().
+#' @description Copies, renames and sorts output files from the Aqualog sample queueing system based upon a supplied run sheet. Also creates a log file using generate_logfile() and copies, renames .opj project files using transfer_project_files(). Options for simple post-processing (e.g. blank subtraction)
 #'
 #' @param folder The folder within the import directory containing all the files from the sample queue run related to the supplied run sheet.
 #' @param export_dir The export directory containing the 'type' subfolders.
@@ -8,6 +8,8 @@
 #' @param run_sheet A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.
 #' @param write_over TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?
 #' @param mqblank_sub TRUE/FALSE. Imports sample types and subtracts an average of all milli-q blanks in the run from each. Exports .csv outputs to the "blank subtracted PEM" folder in each sample type folder.
+#' @param dilution_process TRUE/FALSE where dilution factor values are given in the run sheet, perform a corresponding multiplication to the fluorescence intensity values of those EEMs. Defaults to TRUE.
+#' @param neg_to_0 TRUE/FALSE to set all instances of negative fluorescence in EEMs to 0 prior to export. Defaults to TRUE.
 #' @param dry_run TRUE/FALSE to skip all file copying and return a log of all file import and export paths. Simulates a 'real' run.
 #'
 #' @export
@@ -18,27 +20,29 @@ process_sample_queue <- function(folder,
                                  run_sheet,
                                  write_over = TRUE,
                                  mqblank_sub = TRUE,
+                                 dilution_process = TRUE,
+                                 neg_to_0 = TRUE,
                                  dry_run = FALSE){
   if(isTRUE(dry_run)){
     message("Dry run. Skipping log file creation and project file transfer.")
   } else if(!isTRUE(dry_run)){
-    # 1) create a log file, store it in the sub-folder containing "logs".
+    # Create a log file, store it in the sub-folder containing "logs".
     generate_logfile(run_sheet = run_sheet,
                      destination = paste0(export_dir,"logs/"),
                      folder = folder)
-    # 2) Copy and re-name the project file.
+    # Copy and re-name the project file/s, if there is one.
     transfer_project_files(foldername = folder,
                            run_date = run_date,
                            export_directory = export_dir)
   }
-  # 3) Process the import folder using a run sheet.
+  # Process the import folder using a run sheet.
   file_names_full <- get_names(directory = folder,
                                type = "files",
                                full_names = TRUE)
   file_names_full <- file_names_full[which(ext_detect(file_names_full) != "txt")]
   file_names_full <- file_names_full[which(ext_detect(file_names_full) != "opj")]
   file_names_short <- trim_path(file_names_full)
-  # init the file log. This will eventually be used for the blank subtraction. Now it's just... sitting there.
+  # init the file log.
   file_log <- data.frame(matrix(NA,nrow = length(file_names_full),ncol = 3))
   colnames(file_log) <- c("imported files","exported files","type")
   fn_it_list <- vector(mode = "list", length = nrow(run_sheet))
@@ -141,15 +145,20 @@ process_sample_queue <- function(folder,
       }
     }
   }
-  # Blank subtraction
+  # Post processing query
   if(!isTRUE(dry_run)){
-    if(isTRUE(mqblank_sub)){
-      # What are the types of samples in the log?
-      mqblank_subtract_PEM(log_file = file_log,
-                           neg_to_0 = TRUE)
+    # Any post processing to
+    pprocess <- any(isTRUE(mqblank_sub) || isTRUE(dilution_process) || isTRUE(neg_to_0))
+    if(isTRUE(pprocess)){
+      postprocess_PEM(run_sheet = run_sheet,
+                      log_file = file_log,
+                      neg_to_0 = neg_to_0,
+                      dilution = dilution_process,
+                      blank_subtract = mqblank_sub)
     }
-  }
-  if(isTRUE(dry_run)){
+  } else if(isTRUE(dry_run)){
     return(file_log)
   }
 }
+
+
