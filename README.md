@@ -219,7 +219,9 @@ folder in the file type export sub-directory.
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
-    event of (1) file copy failure, and (2) project file transfers.
+    event of (1) file copy failure, and (2) project file transfers. Some
+    common errors (such as incompatible date usage, run sheet name/file
+    mismatches) could probably be diagnosed automatically fairly easily.
 
 -   add handling for more ASCII data types.
 
