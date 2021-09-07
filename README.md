@@ -38,9 +38,9 @@ package also has support for automatic multi-blank subtraction.
 #### A quick note on ASCII data types
 
 At present **SampleQueue** supports the Processed
-Excitation-Emission-Matrix (PEM) and Absorbance (ABS) ASCII .dat file
-types. See ‘Supported file and data types’ below. Support for more file
-types will be added shortly.
+Excitation-Emission-Matrix (PEM), Absorbance (ABS), and Percent
+Transmission (PCT) ASCII .dat file types. See ‘Supported file and data
+types’ below.
 
 ## Using the SampleQueue package
 
@@ -159,9 +159,9 @@ Depending on user choices during the SampleQ setup process on the
 Aqualog, a number of different ASCII file types will be exported by the
 system for each sample during analysis. All ASCII files have the .dat
 file extension. The current version of **SampleQueue** supports the ABS
-(absorbance data) and PEM (sample-blank processed XYY) ASCII data types.
-The others (e.g. % transmission PCT, blank XYY BEM) will be added in a
-subsequent release.
+(absorbance data), PEM (sample-blank processed XYY) and PCT (percent
+transmission) ASCII data types. The others will be added sporadically as
+needed.
 
 ## OS Compatibility
 
@@ -195,13 +195,18 @@ load **SampleQueue**.
 23/07/21 \| Fixed a bug wherein attempting blank subtraction on a run
 that contained no blanks resulted in an error.
 
-06/09/21 \| Targeted blank subtraction function replaced with a
-generalised ‘post processing’ function. The user can now optionally
-perform blank subtraction as before, along with dilution using a new
-column in the run sheet (Dilution\_Factor). Various parts in the
-`process_sample_queue()` function have also been made more verbose. This
-adds clutter to the console, but aids in error checking - it should be
-pretty clear which part in the process caused a failure, if one occurs.
+06/09/21 \| Dilution support added. Targeted blank subtraction replaced
+with a generalised ‘post processing’ function. The user can now
+optionally perform blank subtraction as before, along with dilution
+using a new column in the run sheet (Dilution\_Factor). Various parts in
+the `process_sample_queue()` function have also been made more verbose.
+This adds clutter to the console, but aids in error checking - it should
+be pretty clear which part in the process caused a failure, if one
+occurs.
+
+07/09/21 \| Percent transmission (PCT) .dat ASCII file support added.
+PCT .dat files now export in the same fashion as ABS files, to their own
+folder in the file type export sub-directory.
 
 ## Planned revisions
 

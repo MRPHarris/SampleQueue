@@ -98,6 +98,7 @@ default_folder_layout <- function(){
   folderx2 <- vector(mode = "list", length = 2)
   folderx3 <- vector(mode = "list", length = 3)
   folderx4 <- vector(mode = "list", length = 4)
+  folderx5 <- vector(mode = "list", length = 5)
   folderx7 <- vector(mode = "list", length = 7)
   # Highest level folders
   SampleQueueFolders <- folderx2
@@ -106,15 +107,15 @@ default_folder_layout <- function(){
   SampleQueueFolders[[2]] <- folderx7
   names(SampleQueueFolders[[2]]) <- c("milliq blanks","sampleq blanks","samples","standards","project files","logs","replicates")
   # Second tier export folders
-  SampleQueueFolders[[2]][["milliq blanks"]] <- folderx3
-  names(SampleQueueFolders[[2]][["milliq blanks"]]) <- c("ABS","PEM","workbooks")
+  SampleQueueFolders[[2]][["milliq blanks"]] <- folderx4
+  names(SampleQueueFolders[[2]][["milliq blanks"]]) <- c("ABS","PCT","PEM","workbooks")
   SampleQueueFolders[[2]][["sampleq blanks"]] <- vector(mode = "list", length = 2)
   names(SampleQueueFolders[[2]][["sampleq blanks"]]) <- c("blank files","workbooks")
-  SampleQueueFolders[[2]][["samples"]] <- folderx4
-  names(SampleQueueFolders[[2]][["samples"]]) <- c("ABS","updated PEM","PEM","workbooks")
-  SampleQueueFolders[[2]][["standards"]] <- folderx4
-  names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","updated PEM","PEM","workbooks")
-  SampleQueueFolders[[2]][["replicates"]] <- folderx4
-  names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","updated PEM","PEM","workbooks")
+  SampleQueueFolders[[2]][["samples"]] <- folderx5
+  names(SampleQueueFolders[[2]][["samples"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
+  SampleQueueFolders[[2]][["standards"]] <- folderx5
+  names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
+  SampleQueueFolders[[2]][["replicates"]] <- folderx5
+  names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
   return(SampleQueueFolders)
 }
