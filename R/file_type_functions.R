@@ -51,9 +51,10 @@ extension_strings <- function(type){
 #' @noRd
 #'
 ASCII_strings <- function(){
-  strings_list <- vector(mode = "list", length = 2)
-  names(strings_list) <- c("Absorbance File","Processed EEM")
+  strings_list <- vector(mode = "list", length = 3)
+  names(strings_list) <- c("Absorbance File","Percent Transmission","Processed EEM")
   strings_list[["Absorbance File"]] <- c("Absorbance Data","Absorbance","absorbance data","absorbance","ABS","abs")
+  strings_list[["Percent Transmission"]] <- c("PCT", "PCT data","Transmission data","pct")
   strings_list[["Processed EEM"]] <- c("raw EEM","PEM","pem","Raw EEM data","PEM data","pem data","Excitation Emission Matrix","Excitation Emission Matrice",
                                        "excitation emission matrix","excitation emission matrice","Processed EEM","processed eem")
   strings_list
