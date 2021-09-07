@@ -100,8 +100,16 @@ the **SampleQueue** import directory.
 After this, running the function `process_sample_queue()` with the
 appropriate parameter inputs (correct run sheet, etc.) will
 automatically rename and copy all the files to the appropriate folders
-within the **SampleQueue** export folder. An option is included for
-milli-q blank subtraction.
+within the **SampleQueue** export folder. Optional parameters can be set
+for milli-q blank subtraction and dilution.
+
+![Processing a set of large EEMs with
+process\_sample\_queue()](man/figures/SQ_PHFC_gif.gif) Here’s a small
+example of what the console churns out whilst process\_sample\_queue()
+is running. These EEMs were quite large; smaller EEMs will copy/transfer
+much faster. The large volume of text is intentional, and gives an
+explicit indication of which part of the processing caused an error,
+should one occur.
 
 After running a **SampleQueue** workflow, the user should be left with a
 collection of appropriately named and sorted files that can then be

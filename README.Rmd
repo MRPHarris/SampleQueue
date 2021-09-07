@@ -55,7 +55,10 @@ Column names must match those shown in the example in order for the package to w
 
 Once analysis using SampleQ on the Aqualog is completed, the user collates the files together in a single folder along with any project (.opj) and text files (.txt). This folder should then be placed into to the **SampleQueue** import directory.
 
-After this, running the function `process_sample_queue()` with the appropriate parameter inputs (correct run sheet, etc.) will automatically rename and copy all the files to the appropriate folders within the **SampleQueue** export folder. An option is included for milli-q blank subtraction.
+After this, running the function `process_sample_queue()` with the appropriate parameter inputs (correct run sheet, etc.) will automatically rename and copy all the files to the appropriate folders within the **SampleQueue** export folder. Optional parameters can be set for milli-q blank subtraction and dilution.
+
+![Processing a set of large EEMs with process_sample_queue()](man/figures/SQ_PHFC_gif.gif)
+Here's a small example of what the console churns out whilst process_sample_queue() is running. These EEMs were quite large; smaller EEMs will copy/transfer much faster. The large volume of text is intentional, and gives an explicit indication of which part of the processing caused an error, should one occur.
 
 After running a **SampleQueue** workflow, the user should be left with a collection of appropriately named and sorted files that can then be indexed and interrogated with the existing R fluorescence analysis framework provided chiefly by the [eemR](https://cran.r-project.org/web/packages/eemR/index.html), [staRdom](https://github.com/MatthiasPucher/staRdom) and [EEM](https://CRAN.R-project.org/package=EEM) packages.
 
