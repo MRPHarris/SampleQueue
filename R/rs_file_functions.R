@@ -459,6 +459,4 @@ postprocess_PEM <- function(run_sheet,
     eemUtils::save_eemlist_csvs(eemlist = eems_subtracted,
                                 outputfolder = target_folder)
   }
-  return(eems_subtracted)
 }
-
