@@ -22,13 +22,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The **SampleQueue** package is a streamlined file processing/handling framework for the Horiba [Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/) spectrofluorometer's sample queuing ("SampleQ") system. During SampleQ, the Aqualog software automatically processes and corrects sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do for individual samples (such as correction for inner filter effects and Rayleigh masking). 
+_No autosampler? No problem!_
 
-SampleQ also avoids some of the classic pitfalls of the Aqualog's capability, including host computer processing slowdown as the user's project folder grows in size. 
+The **SampleQueue** package is a streamlined file processing/handling framework for the Horiba [Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/) spectrofluorometer's sample queuing ("SampleQ") system. During SampleQ, the Aqualog software automatically processes and corrects sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do for individual samples (such as correction for inner filter effects, Rayleigh masking, and normalisation). SampleQ also avoids host computer slowdown from a bloated user project folder. 
 
 Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention, comprising a basic combination of prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or Example001Blank). This makes managing outputs extremely cumbersome. 
 
-This package provides a workaround, allowing the user to compile complex runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and **SampleQueue** allows for rapid sample throughput, followed by easy management of the resulting data files. 
+This package provides a workaround, allowing the user to compile complex runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and **SampleQueue** allows for rapid sample throughput, followed by easy management of the resulting data files. The package also has support for automatic multi-blank subtraction. 
 
 #### A quick note on ASCII data types
 
@@ -44,14 +44,14 @@ The basic logic comprising the **SampleQueue** workflow is illustrated below.
 
 Setting up the folder framework used by **SampleQueue** is performed by choosing a parent directory and running `create_queue_folders()`. This will fill that folder with all the sub-directories used by the package. 
 
-In a standard workflow, the user then compiles a 'run sheet'. A run sheet is comprised of a basic table containing a given run's sample queue names (i.e. the naming convention that will be used by the Aqualog during analysis), the user's own desired file names, and one of a number of supported row-file 'types' (e.g. 'sample', "mqblank", "sqblank", "standard", "replicate"). An example is shown below. 
+In a standard workflow, the user then compiles a 'run sheet'. A run sheet is comprised of a basic table containing a given run's sample queue names (i.e. the naming convention that will be used by the Aqualog during analysis), the user's own desired file names, and one of a number of supported row-file 'types' (e.g. 'sample', "mqblank", "sqblank", "standard", "replicate"). An example is shown below.
 
 ```{r, include = TRUE}
 data_example <- readRDS(file = "data/run_sheet_example.rds")
 knitr::kable(data_example)
 ```
 
-Column names must match those shown in the example in order for the package to work. The "Real_Names" column can include any combination of characters or digits reflecting your desired file naming convention. The 'types' determine categorisation and file sorting - for example, files associated with run sheet rows marked 'standard' will be sorted and sent to the standards folder. The checklist column is optional - I use it whilst running samples on the Aqualog to ensure there is no chance of a mix-up during the course of an analysis. 
+Column names must match those shown in the example in order for the package to work. The "Real_Names" column can include any combination of characters or digits reflecting your desired file naming convention. The 'types' determine categorisation and file sorting - for example, files associated with run sheet rows marked 'standard' will be sorted and sent to the standards folder. The checklist column is optional - I use it whilst running samples on the Aqualog to ensure there is no chance of a mix-up during the course of an analysis. Values entered into the "Dilution_Factor" column will be used to multiply that sample's PEM intensity values if the user elects to enable dilution correction.
 
 Once analysis using SampleQ on the Aqualog is completed, the user collates the files together in a single folder along with any project (.opj) and text files (.txt). This folder should then be placed into to the **SampleQueue** import directory.
 
@@ -103,11 +103,15 @@ devtools::install_github("MRPHarris/SampleQueue")
 
 23/07/21 | Fixed a bug wherein attempting blank subtraction on a run that contained no blanks resulted in an error.
 
+06/09/21 | Targeted blank subtraction function replaced with a generalised 'post processing' function. The user can now optionally perform blank subtraction as before, along with dilution using a new column in the run sheet (Dilution_Factor). Various parts in the `process_sample_queue()` function have also been made more verbose. This adds clutter to the console, but aids in error checking - it should be pretty clear which part in the process caused a failure, if one occurs. 
+
 ## Planned revisions
 
-- update error checking to provide more useful information in the event of (1) file copy failure, and (2) project file transfers
+- update error checking to provide more useful information in the event of (1) file copy failure, and (2) project file transfers. 
 
-- add handling for all ASCII data types. 
+- add handling for more ASCII data types. 
+
+- add processing options chosen (blank subtraction, etc.) to the exported logfile.
 
 ## References
 

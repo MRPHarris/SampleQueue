@@ -111,10 +111,10 @@ default_folder_layout <- function(){
   SampleQueueFolders[[2]][["sampleq blanks"]] <- vector(mode = "list", length = 2)
   names(SampleQueueFolders[[2]][["sampleq blanks"]]) <- c("blank files","workbooks")
   SampleQueueFolders[[2]][["samples"]] <- folderx4
-  names(SampleQueueFolders[[2]][["samples"]]) <- c("ABS","milliq blank subtracted PEM","PEM","workbooks")
+  names(SampleQueueFolders[[2]][["samples"]]) <- c("ABS","updated PEM","PEM","workbooks")
   SampleQueueFolders[[2]][["standards"]] <- folderx4
-  names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","milliq blank subtracted PEM","PEM","workbooks")
+  names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","updated PEM","PEM","workbooks")
   SampleQueueFolders[[2]][["replicates"]] <- folderx4
-  names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","milliq blank subtracted PEM","PEM","workbooks")
+  names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","updated PEM","PEM","workbooks")
   return(SampleQueueFolders)
 }

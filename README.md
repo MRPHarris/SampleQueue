@@ -9,6 +9,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+*No autosampler? No problem!*
+
 The **SampleQueue** package is a streamlined file processing/handling
 framework for the Horiba
 [Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/)
@@ -16,11 +18,9 @@ spectrofluorometer’s sample queuing (“SampleQ”) system. During SampleQ,
 the Aqualog software automatically processes and corrects sample data
 based upon pre-set parameters, rapidly performing tasks that would
 typically take far longer to do for individual samples (such as
-correction for inner filter effects and Rayleigh masking).
-
-SampleQ also avoids some of the classic pitfalls of the Aqualog’s
-capability, including host computer processing slowdown as the user’s
-project folder grows in size.
+correction for inner filter effects, Rayleigh masking, and
+normalisation). SampleQ also avoids host computer slowdown from a
+bloated user project folder.
 
 Unfortunately, the SampleQ system only outputs files using a restrictive
 file naming convention, comprising a basic combination of
@@ -32,7 +32,8 @@ runs using SampleQ via the creation of a ‘run sheet’, in a fashion that
 should be familiar to users of other scientific instruments. Even using
 run setups incorporating multiple blanks, standards and replicates, the
 combination of SampleQ and **SampleQueue** allows for rapid sample
-throughput, followed by easy management of the resulting data files.
+throughput, followed by easy management of the resulting data files. The
+package also has support for automatic multi-blank subtraction.
 
 #### A quick note on ASCII data types
 
@@ -66,19 +67,19 @@ data_example <- readRDS(file = "data/run_sheet_example.rds")
 knitr::kable(data_example)
 ```
 
-| Order | Remaining | SampleQ\_Name         | Real\_Name           | Type      | Checklist |
-|------:|----------:|:----------------------|:---------------------|:----------|:----------|
-|     1 |        10 | Example0001Blank      | swc\_sqblank\_050721 | sqblank   | NA        |
-|     2 |         9 | Example0001Sample0001 | mqblank\_050721a     | mqblank   | NA        |
-|     3 |         8 | Example0001Sample0002 | mqblank\_050721b     | mqblank   | NA        |
-|     4 |         7 | Example0001Sample0003 | Sample\_1            | sample    | NA        |
-|     5 |         6 | Example0001Sample0004 | Sample\_2            | sample    | NA        |
-|     6 |         5 | Example0001Sample0005 | Sample\_3            | sample    | NA        |
-|     7 |         4 | Example0001Sample0006 | Sample\_4            | sample    | NA        |
-|     8 |         3 | Example0001Sample0007 | Sample\_5            | sample    | NA        |
-|     9 |         2 | Example0001Sample0018 | StandardA\_050721a   | standard  | NA        |
-|    10 |         1 | Example0001Sample0019 | Sample\_1\_re        | replicate | NA        |
-|    11 |         0 | Example0001Sample0020 | mqblank\_050721c     | mqblank   | NA        |
+| Order | Remaining | SampleQ\_Name         | Real\_Name           | Type      | Checklist | Dilution\_Factor |
+|------:|----------:|:----------------------|:---------------------|:----------|:----------|-----------------:|
+|     1 |        10 | Example0001Blank      | swc\_sqblank\_050721 | sqblank   | NA        |               NA |
+|     2 |         9 | Example0001Sample0001 | mqblank\_050721a     | mqblank   | NA        |               NA |
+|     3 |         8 | Example0001Sample0002 | mqblank\_050721b     | mqblank   | NA        |               NA |
+|     4 |         7 | Example0001Sample0003 | Sample\_1            | sample    | NA        |               NA |
+|     5 |         6 | Example0001Sample0004 | Sample\_2            | sample    | NA        |               NA |
+|     6 |         5 | Example0001Sample0005 | Sample\_3            | sample    | NA        |               NA |
+|     7 |         4 | Example0001Sample0006 | Sample\_4            | sample    | NA        |                2 |
+|     8 |         3 | Example0001Sample0007 | Sample\_5            | sample    | NA        |               NA |
+|     9 |         2 | Example0001Sample0018 | StandardA\_050721a   | standard  | NA        |               NA |
+|    10 |         1 | Example0001Sample0019 | Sample\_1\_re        | replicate | NA        |               NA |
+|    11 |         0 | Example0001Sample0020 | mqblank\_050721c     | mqblank   | NA        |               NA |
 
 Column names must match those shown in the example in order for the
 package to work. The “Real\_Names” column can include any combination of
@@ -87,7 +88,9 @@ characters or digits reflecting your desired file naming convention. The
 associated with run sheet rows marked ‘standard’ will be sorted and sent
 to the standards folder. The checklist column is optional - I use it
 whilst running samples on the Aqualog to ensure there is no chance of a
-mix-up during the course of an analysis.
+mix-up during the course of an analysis. Values entered into the
+“Dilution\_Factor” column will be used to multiply that sample’s PEM
+intensity values if the user elects to enable dilution correction.
 
 Once analysis using SampleQ on the Aqualog is completed, the user
 collates the files together in a single folder along with any project
@@ -192,12 +195,23 @@ load **SampleQueue**.
 23/07/21 \| Fixed a bug wherein attempting blank subtraction on a run
 that contained no blanks resulted in an error.
 
+06/09/21 \| Targeted blank subtraction function replaced with a
+generalised ‘post processing’ function. The user can now optionally
+perform blank subtraction as before, along with dilution using a new
+column in the run sheet (Dilution\_Factor). Various parts in the
+`process_sample_queue()` function have also been made more verbose. This
+adds clutter to the console, but aids in error checking - it should be
+pretty clear which part in the process caused a failure, if one occurs.
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
-    event of (1) file copy failure, and (2) project file transfers
+    event of (1) file copy failure, and (2) project file transfers.
 
--   add handling for all ASCII data types.
+-   add handling for more ASCII data types.
+
+-   add processing options chosen (blank subtraction, etc.) to the
+    exported logfile.
 
 ## References
 

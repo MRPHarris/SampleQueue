@@ -39,6 +39,7 @@ transfer_project_files <- function(foldername, run_date, export_directory){
                 to = projfile_name_to)
     }
   }
+  message("Project files transferred.")
 }
 
 #' Rename a given project file name. Output will be a short file name, with info from folder name.
