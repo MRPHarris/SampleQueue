@@ -334,9 +334,13 @@ postprocess_PEM <- function(run_sheet,
   message("## Processing starting for run-sheet EEMs")
   log <- log_file
   # Initial trimming of sqblanks and workbooks
-  log <- log[-which(log$type == "Sample Queue Blank"),] # sqblank exclusion
-  log_extensions <- ext_detect(log$`exported files`)
-  log <- log[-which(log_extensions == "ogw"),] # workbook exclusion
+  if(length(which(log$type == "Sample Queue Blank")) > 0){
+    log <- log[-which(log$type == "Sample Queue Blank"),] # sqblank exclusion if any present
+  }
+  log_extensions <- ext_detect(log$`exported files`) # check extensions
+  if(length(which(log_extensions == "ogw")) > 0){
+    log <- log[-which(log_extensions == "ogw"),] # workbook exclusion if any present
+  }
   # The log now only contains files associated with samples, replicates, blanks and standards.
   # Select for the PEM files.
   stripped_export_files <- trim_path(log$`exported files`)

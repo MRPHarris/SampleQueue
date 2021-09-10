@@ -15,9 +15,9 @@ The **SampleQueue** package is a streamlined file processing/handling
 framework for the Horiba
 [Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/)
 spectrofluorometer’s sample queuing (“SampleQ”) system. During SampleQ,
-the Aqualog software automatically processes and corrects sample data
-based upon pre-set parameters, rapidly performing tasks that would
-typically take far longer to do for individual samples (such as
+the Aqualog software automatically processes and corrects fluorescence
+sample data based upon pre-set parameters, rapidly performing tasks that
+would typically take far longer to do for individual samples (such as
 correction for inner filter effects, Rayleigh masking, and
 normalisation). SampleQ also avoids host computer slowdown from a
 bloated user project folder.
