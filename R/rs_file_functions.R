@@ -412,9 +412,9 @@ postprocess_PEM <- function(run_sheet,
     # 1) Blank subtraction
     if(!isTRUE(any(log$type == "MilliQ Water Blank"))){
       message("No milliq blanks. Skipping blank subtraction.")
+      eems_subtracted <- sample_eemlist
     } else{
       if(isTRUE(blank_subtract)){
-
         # perform subtraction
         eems_subtracted <- eemlist_subtract(eems_minuend = sample_eemlist,
                                             eem_subtrahend = blank_eem)
