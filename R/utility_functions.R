@@ -297,6 +297,11 @@ eem_read_mod <- function (file){
     if (!all(c("file", "x", "em", "ex") %in% names(data))) {
       stop("Your custom function should return a named list with four components: file, x, ex, em")
     }
+    file_path_sans_ext <- function(x, compression = FALSE) {
+      if (compression)
+        x <- sub("[.](gz|bz2|xz)$", "", x)
+      sub("([^.]+.+)\\.[[:alnum:]]+$", "\\1", x)
+    }
     res <- list(
       file = data$file,
       sample = ifelse(
