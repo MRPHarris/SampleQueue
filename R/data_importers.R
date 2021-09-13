@@ -119,17 +119,17 @@ ABS_read <- function (ABS_path, order = TRUE, recursive = FALSE, dec = NULL, str
 #'
 #' @export
 #'
-PCT_read <- function (ABS_path, order = TRUE, recursive = FALSE, dec = NULL, str_match = TRUE,
+PCT_read <- function (PCT_path, order = TRUE, recursive = FALSE, dec = NULL, str_match = TRUE,
                       sep = NULL, verbose = TRUE, cores = parallel::detectCores(logical = FALSE))
 {
-  if(dir.exists(ABS_path)){
+  if(dir.exists(PCT_path)){
     if(isTRUE(str_match)){
-      abs_data <- get_names(ABS_dir, type = "files", string = "PCT")
+      abs_data <- get_names(PCT_path, type = "files", string = "PCT")
     } else {
-      abs_data <- get_names(ABS_dir, type = "files")
+      abs_data <- get_names(PCT_path, type = "files")
     }
-  } else if (file.exists(ABS_path)) {
-    abs_data <- ABS_path
+  } else if (file.exists(PCT_path)) {
+    abs_data <- PCT_path
   } else stop("Absorbance data was not found!")
   cl <- parallel::makeCluster(min(cores, length(abs_data)), type = "PSOCK")
   parallel::clusterExport(cl, c("dec", "sep", "verbose"),
