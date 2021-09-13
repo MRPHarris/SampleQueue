@@ -217,10 +217,10 @@ PCT .dat files now export in the same fashion as ABS files, to their own
 folder in the file type export sub-directory.
 
 13/09/21 \| Added Absorbance and Percent Transmission data importers,
-`ABS_read()` and `PCT_read`, for importing ABS and PCT .dat ASCII files.
-Both functions are direct modifications of absorbance\_read() from the
-staRdom package, with some adjustments to ensure .dat files are read
-correctly.
+`ABS_read()` and `PCT_read()`, for importing ABS and PCT .dat ASCII
+files. Both functions are direct modifications of absorbance\_read()
+from the staRdom package, with some adjustments to ensure .dat files are
+read correctly.
 
 ## Planned revisions
 
