@@ -216,6 +216,11 @@ occurs.
 PCT .dat files now export in the same fashion as ABS files, to their own
 folder in the file type export sub-directory.
 
+13/09/21 \| Added an Absorbance data importer, `ABS_read()`, for
+importing ABS .dat ASCII files. It is a direct modification of staRdom’s
+absorbance\_read() function, with some adjustments to ensure .dat files
+are read correctly.
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
