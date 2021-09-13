@@ -11,15 +11,16 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-  EEM,
-  eemR,
-  staRdom,
-  eemUtils,
-  data.tree,
-  plyr,
-  DiagrammeR,
-  readxl,
-  xlsx
+    EEM,
+    eemR,
+    staRdom,
+    eemUtils,
+    data.tree,
+    plyr,
+    DiagrammeR,
+    readxl,
+    xlsx,
+    parallel
 Remotes: MRPHarris/eemUtils
 Depends: 
   R (>= 3.1),
