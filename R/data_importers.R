@@ -24,9 +24,9 @@ ABS_read <- function (ABS_path, order = TRUE, recursive = FALSE, dec = NULL, str
 {
   if(dir.exists(ABS_path)){
     if(isTRUE(str_match)){
-      abs_data <- get_names(ABS_dir, type = "files", string = "ABS")
+      abs_data <- get_names(ABS_path, type = "files", string = "ABS")
     } else {
-      abs_data <- get_names(ABS_dir, type = "files")
+      abs_data <- get_names(ABS_path, type = "files")
     }
   } else if (file.exists(ABS_path)) {
     abs_data <- ABS_path
