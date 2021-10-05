@@ -171,6 +171,34 @@ file extension. The current version of **SampleQueue** supports the ABS
 transmission) ASCII data types. The others will be added sporadically as
 needed.
 
+A pair of import functions are included for ABS and PCT data (see
+example below for a simple example of ABS data handling). To read in PEM
+data, use `eemR::eem_read(data_directory, import_function = "aqualog")`.
+
+``` r
+# packages, dirs
+pacman::p_load(staRdom,eemR,ggplot2,SampleQueue,magrittr,tidyverse)
+standard_ABS_dir <- "data/ILSMBT_spectra/"
+# read, edit
+MBT_ABS <- SampleQueue::ABS_read(standard_ABS_dir)
+MBT_ABS <- pivot_longer(MBT_ABS,cols = 2:ncol(MBT_ABS))
+names <- unlist(lapply(str_split(MBT_ABS$name,"ABS"),"[",1))
+MBT_ABS$name <- str_remove(names, paste0("ILSMBT","_"))
+minwav <- min(MBT_ABS$wavelength)
+# plot
+ggplot() +
+  geom_line(data = MBT_ABS, aes(wavelength, value, color = name)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(expand = c(0,0), limits = c(-0.01,0.2)) +
+  scale_x_continuous(expand = c(0,0), limits = c(minwav-35,500), breaks = c(239,250,300,350,400,450,500)) +
+  geom_text(data = MBT_ABS %>% filter(wavelength == first(wavelength)), aes(label = name, x = wavelength - 17, y = value, color = name)) +
+  ggtitle(paste0("Keele Ice Lab MBT SRM Absorbance | n = ", length(unique(MBT_ABS$name)))) +
+  theme(panel.grid.minor.x = element_blank())
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
 ## OS Compatibility
 
 The underlying code used for file management (copying, renaming) in
