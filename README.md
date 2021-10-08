@@ -250,6 +250,8 @@ files. Both functions are direct modifications of absorbance\_read()
 from the staRdom package, with some adjustments to ensure .dat files are
 read correctly.
 
+14/10/21 \| Readme update for ABS reading and plotting.
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the

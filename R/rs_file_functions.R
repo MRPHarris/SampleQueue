@@ -331,6 +331,7 @@ postprocess_PEM <- function(run_sheet,
                             blank_subtract = TRUE,
                             neg_to_0 = TRUE,
                             dilution = TRUE){
+  # This function deals with the processing steps that might be applied to EEMs from SampleQueue.
   message("## Processing starting for run-sheet EEMs")
   log <- log_file
   # Initial trimming of sqblanks and workbooks
@@ -351,7 +352,7 @@ postprocess_PEM <- function(run_sheet,
   # logs
   PEM_mqblank_log <- log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]
   PEM_sample_log <- log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]
-  # Dilution Handling setup
+  # Dilution  setup, if the option is set to TRUE. Execution comes later.
   if(isTRUE(dilution)){
     PEM_sample_log$dilution <- NA
     # get sample names without extensions
@@ -366,10 +367,10 @@ postprocess_PEM <- function(run_sheet,
       PEM_sample_log$dilution[it_row] <- run_sheet$Dilution_Factor[which(!is.na(run_sheet$Dilution_Factor))][q]
     }
   }
-  # filenames
+  # Filenames for samples.
   PEM_mqblanks <- as.character(log_PEM[which(log_PEM$type == "MilliQ Water Blank"),]$`exported files`)
   PEM_samples <- as.character(log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]$`exported files`)
-  # Average the blank EEMs, if applicable
+  # Blank subtraction setup - average the blank EEMs, if milliq blanks are present and the option is specified as TRUE.
   if(isTRUE(any(log$type == "MilliQ Water Blank"))){
     if(isTRUE(blank_subtract)){
       blank_eemlist <- eem_read_mod(file = PEM_mqblanks)
@@ -421,7 +422,7 @@ postprocess_PEM <- function(run_sheet,
         message(paste0("Blank subtraction performed for ",type_it," EEMs"))
       }
     }
-    # 2) negative to NA
+    # 2) negative to 0
     if(isTRUE(neg_to_0)){
       eems_subtracted <- eemlist_neg_to_0(eems_subtracted)
       message(paste0("Negative fluorescence intensity values set to 0 for ",type_it," EEMs"))

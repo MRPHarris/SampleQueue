@@ -136,6 +136,8 @@ devtools::install_github("MRPHarris/SampleQueue")
 
 13/09/21 | Added Absorbance and Percent Transmission data importers, `ABS_read()` and `PCT_read()`, for importing ABS and PCT .dat ASCII files. Both functions are direct modifications of absorbance_read() from the staRdom package, with some adjustments to ensure .dat files are read correctly.
 
+14/10/21 | Readme update for ABS reading and plotting.
+
 ## Planned revisions
 
 - update error checking to provide more useful information in the event of (1) file copy failure, and (2) project file transfers. Some common errors (such as incompatible date usage, run sheet name/file mismatches) could probably be diagnosed automatically fairly easily. 
