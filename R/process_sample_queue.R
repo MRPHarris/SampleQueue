@@ -8,6 +8,7 @@
 #' @param run_sheet A data.frame matching the format of a run sheet. For info on how to format a run sheet, see the package documentation.
 #' @param write_over TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?
 #' @param mqblank_sub TRUE/FALSE. Imports sample types and subtracts an average of all milli-q blanks in the run from each. Exports .csv outputs to the "blank subtracted PEM" folder in each sample type folder.
+#' @param pblank_sub TRUE/FALSE. Import, dilution process and average any procedural blanks in the run, and subtract the resulting EEM from all samples and replicates. Defaults to TRUE.
 #' @param dilution_process TRUE/FALSE where dilution factor values are given in the run sheet, perform a corresponding multiplication to the fluorescence intensity values of those EEMs. Defaults to TRUE.
 #' @param neg_to_0 TRUE/FALSE to set all instances of negative fluorescence in EEMs to 0 prior to export. Defaults to TRUE.
 #' @param dry_run TRUE/FALSE to skip all file copying and return a log of all file import and export paths. Simulates a 'real' run.
@@ -20,6 +21,7 @@ process_sample_queue <- function(folder,
                                  run_sheet,
                                  write_over = TRUE,
                                  mqblank_sub = TRUE,
+                                 pblank_sub = TRUE,
                                  dilution_process = TRUE,
                                  neg_to_0 = TRUE,
                                  dry_run = FALSE){
