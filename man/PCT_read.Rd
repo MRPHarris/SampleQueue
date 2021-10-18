@@ -5,7 +5,7 @@
 \title{Read in PCT files.}
 \usage{
 PCT_read(
-  ABS_path,
+  PCT_path,
   order = TRUE,
   recursive = FALSE,
   dec = NULL,
@@ -16,8 +16,6 @@ PCT_read(
 )
 }
 \arguments{
-\item{ABS_path}{full path to either (1) a folder containing multiple PCT .dat files, or (2) a single absorbance file.}
-
 \item{order}{TRUE/FALSE to order data according to wavelength.}
 
 \item{recursive}{TRUE/FALSE to recurse into sub-directories.}
@@ -31,6 +29,8 @@ PCT_read(
 \item{verbose}{TRUE/FALSE to provide additional information whilst running.}
 
 \item{cores}{number of CPU cores used for parallel computation. Defaults to maximum, detected automatically.}
+
+\item{ABS_path}{full path to either (1) a folder containing multiple PCT .dat files, or (2) a single absorbance file.}
 }
 \description{
 Read in one or more Percent Transmission (PCT) ASCII .dat files from a given directory. This function is a direct

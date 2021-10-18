@@ -12,6 +12,7 @@ type_strings <- function(){
   names(type_string_list) <- c("Sample Queue Blank", "MilliQ Water Blank", "Sample","Standard","Replicate")
   type_string_list[["Sample Queue Blank"]] <- c("sqblank","sq","sampleqblank","sampleq blank","SampleQ","SampleQBlank","SQ","SampleQ Blank", "samplpe queue blank","Sample Queue Blank")
   type_string_list[["MilliQ Water Blank"]] <- c("mqblank","milliq","milliqblank","milliq blank","MilliQ","MilliQBlank","MQ","mq","MilliQ Blank","milli-q blank","Milli-Q Blank","milli-q water blank","Milli-Q Water Blank")
+  type_string_list[["Procedural Blank"]] <- c("pblank","procblank","proceduralblank","procedural blank", "ProceduralBlank","Procedural Blank","pb","PB")
   type_string_list[["Sample"]] <- c("Sample","sample")
   type_string_list[["Standard"]] <- c("STD","std","Standard","standard")
   type_string_list[["Replicate"]] <- c("Replicate","replicate","rep","Rep","Repeat","repeat","Rpt","rpt")
@@ -34,7 +35,7 @@ extension_strings <- function(type){
     strings_list[["Blank File"]] <- c("blank files","blank file","Blank Files","Blank File")
     strings_list[["Workbook File"]] <- c("workbook","workbooks","Workbook","Workbooks","Workbook File","workbook file","Workbook Files","workbook files")
     strings_list
-  } else if(type == "Sample" || type == "MilliQ Water Blank" || type == "Replicate" || type == "Standard"){
+  } else if(type == "Sample" || type == "MilliQ Water Blank" || type == "Replicate" || type == "Standard" || type == "Procedural Blank"){
     strings_list <- vector(mode = "list", length = 2)
     names(strings_list) <- c("Workbook File","ASCII Data File")
     strings_list[["Workbook File"]] <- c("workbook","workbooks","Workbook","Workbooks","Workbook File","workbook file","Workbook Files","workbook files")

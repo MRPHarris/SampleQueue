@@ -410,7 +410,7 @@ eemlist_neg_to_0 <- function(eemlist, outputfolder = NULL){
 #'        bad processing, noise, or artefacts. This function will set all negative
 #'        values within one or more EEMs to 0.
 #'
-#' @param eemlist A list of EEMs in a format compliant with eemR/staRdom.
+#' @param eem an EEM object compliant with the eemR/staRdom framework.
 #' @param outputfolder optional; either NULL or a path to the folder where the new eemlist will be sent.
 #'
 #' @noRd

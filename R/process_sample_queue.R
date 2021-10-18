@@ -101,7 +101,7 @@ process_sample_queue <- function(folder,
       } else if(isTRUE(dry_run)){
         message("Dry run. Files related to run-sheet row ",r," (",type_it,")"," were added to the file log.")
       }
-    } else if(type_it == "Sample" || type_it == "MilliQ Water Blank" || type_it == "Replicate" || type_it == "Standard"){
+    } else if(type_it == "Sample" || type_it == "MilliQ Water Blank" || type_it == "Replicate" || type_it == "Standard" || type_it == "Procedural Blank"){
       ## "NORMAL" FILES
       # This is the type folder where the files will end up.
       row_type_folder <- get_type_folder(run_sheet_row = row_it,
@@ -148,13 +148,14 @@ process_sample_queue <- function(folder,
   # Post processing query
   if(!isTRUE(dry_run)){
     # Any post processing to
-    pprocess <- any(isTRUE(mqblank_sub) || isTRUE(dilution_process) || isTRUE(neg_to_0))
+    pprocess <- any(isTRUE(mqblank_sub) || isTRUE(dilution_process) || isTRUE(neg_to_0) ||isTRUE(pblank_sub))
     if(isTRUE(pprocess)){
       postprocess_PEM(run_sheet = run_sheet,
                       log_file = file_log,
                       neg_to_0 = neg_to_0,
                       dilution = dilution_process,
-                      blank_subtract = mqblank_sub)
+                      pblank_subtract = pblank_sub,
+                      mqblank_subtract = mqblank_sub)
     }
   } else if(isTRUE(dry_run)){
     return(file_log)
