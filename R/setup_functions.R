@@ -96,7 +96,7 @@ create_queue_folders <- function(parent_directory,
 #'
 default_folder_layout <- function(){
   folderx2 <- vector(mode = "list", length = 2)
-  folderx3 <- vector(mode = "list", length = 3)
+  #folderx3 <- vector(mode = "list", length = 3)
   folderx4 <- vector(mode = "list", length = 4)
   folderx5 <- vector(mode = "list", length = 5)
   folderx7 <- vector(mode = "list", length = 7)
@@ -117,5 +117,7 @@ default_folder_layout <- function(){
   names(SampleQueueFolders[[2]][["standards"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
   SampleQueueFolders[[2]][["replicates"]] <- folderx5
   names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
+  SampleQueueFolders[[2]][["procedural blanks"]] <- folderx5
+  names(SampleQueueFolders[[2]][["procedural blanks"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
   return(SampleQueueFolders)
 }

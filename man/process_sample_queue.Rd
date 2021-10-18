@@ -11,6 +11,7 @@ process_sample_queue(
   run_sheet,
   write_over = TRUE,
   mqblank_sub = TRUE,
+  pblank_sub = TRUE,
   dilution_process = TRUE,
   neg_to_0 = TRUE,
   dry_run = FALSE
@@ -28,6 +29,8 @@ process_sample_queue(
 \item{write_over}{TRUE/FALSE file.copy parameter. Write over identically named files in the destination folders?}
 
 \item{mqblank_sub}{TRUE/FALSE. Imports sample types and subtracts an average of all milli-q blanks in the run from each. Exports .csv outputs to the "blank subtracted PEM" folder in each sample type folder.}
+
+\item{pblank_sub}{TRUE/FALSE. Import, dilution process and average any procedural blanks in the run, and subtract the resulting EEM from all samples and replicates. Defaults to TRUE.}
 
 \item{dilution_process}{TRUE/FALSE where dilution factor values are given in the run sheet, perform a corresponding multiplication to the fluorescence intensity values of those EEMs. Defaults to TRUE.}
 

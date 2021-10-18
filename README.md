@@ -252,6 +252,18 @@ read correctly.
 
 14/10/21 \| Readme update for ABS reading and plotting.
 
+18/10/21 \| Added support for a second ‘layer’ of optional blank
+subtraction, in the form of a ‘pblank’ run sheet type. This is intended
+for procedural blanks - blanks which aim to capture one or more
+treatment steps prior to/upstream of laboratory handling. This might
+include blanks of storage containers or sampling equipment. Procedural
+blanks are first subject to dilution handling and milli-q blank
+subtraction, where appropriate. They are then averaged (if more than one
+is present in a run) and subtracted from samples and replicates in the
+run. Note that pblanks are *not* subtracted from standards, as those are
+assumed to not be subject to the upstream protocol targeted with the
+pblank/s.
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
