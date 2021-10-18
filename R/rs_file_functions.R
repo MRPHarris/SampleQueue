@@ -376,11 +376,9 @@ postprocess_PEM <- function(run_sheet,
   PEM_samples <- as.character(log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]$`exported files`)
   # Milli-Q Blank subtraction setup.
   if(isTRUE(any(log$type == "MilliQ Water Blank")) & isTRUE(mqblank_subtract)){
-    if(isTRUE(blank_subtract)){
       mqblank_eemlist <- eem_read_mod(file = PEM_mqblanks)
       mqblank_eemlist <- average_eems(eemlist = mqblank_eemlist)
       mqblank_eem <- eem_neg_to_0(mqblank_eemlist[[1]])
-    }
   }
   # Procedural blank subtraction setup.
   if(isTRUE(any(log$type == "Procedural Blank")) & isTRUE(pblank_subtract)){
@@ -472,7 +470,7 @@ postprocess_PEM <- function(run_sheet,
     sample_eemlist <- eem_read_mod(file = PEM_samples_it)
     ## Processing steps!
     # 1) Milli-Q blank subtraction
-    if(isTRUE(blank_subtract)){
+    if(isTRUE(mqblank_subtract)){
       if(!isTRUE(any(log$type == "MilliQ Water Blank"))){
         message("No milliq blanks. Skipping mqblank subtraction.")
         eems_subtracted <- sample_eemlist
