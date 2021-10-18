@@ -410,7 +410,7 @@ postprocess_PEM <- function(run_sheet,
       for(x in seq_along(pblank_dilution_itlist)){
         # What's this eem's name?
         target_index <- eem_indices_fordilution[x]
-        target_name <- PEM_log_names_pre[target_index]
+        target_name <- eem_names_pre[target_index]
         # Get its row from the run sheet.
         target_logrow <- PEM_pblank_log[target_index,]
         # Get this EEM from eemlist
