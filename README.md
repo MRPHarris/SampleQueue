@@ -264,6 +264,13 @@ run. Note that pblanks are *not* subtracted from standards, as those are
 assumed to not be subject to the upstream protocol targeted with the
 pblank/s.
 
+03/11/21 \| Added an additional run-sheet row type, ‘other’. Rows in the
+run sheet listed as type ‘other’ will have their files sorted and sent
+to the ‘other’ folder within the export directory without any
+post-processing. This is intended for use with samples that didn’t run
+properly - either due to premature ending of a run, or user error
+(e.g. mismatch of samples, accidental repeats, etc.).
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
