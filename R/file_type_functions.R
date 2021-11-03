@@ -36,7 +36,7 @@ extension_strings <- function(type){
     strings_list[["Blank File"]] <- c("blank files","blank file","Blank Files","Blank File")
     strings_list[["Workbook File"]] <- c("workbook","workbooks","Workbook","Workbooks","Workbook File","workbook file","Workbook Files","workbook files")
     strings_list
-  } else if(type == "Sample" || type == "MilliQ Water Blank" || type == "Replicate" || type == "Standard" || type == "Procedural Blank" || type = "Other"){
+  } else if(type == "Sample" || type == "MilliQ Water Blank" || type == "Replicate" || type == "Standard" || type == "Procedural Blank" || type == "Other"){
     strings_list <- vector(mode = "list", length = 2)
     names(strings_list) <- c("Workbook File","ASCII Data File")
     strings_list[["Workbook File"]] <- c("workbook","workbooks","Workbook","Workbooks","Workbook File","workbook file","Workbook Files","workbook files")
