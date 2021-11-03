@@ -103,7 +103,7 @@ process_sample_queue <- function(folder,
       } else if(isTRUE(dry_run)){
         message("Dry run. Files related to run-sheet row ",r," (",type_it,")"," were added to the file log.")
       }
-    } else if(type_it == "Sample" || type_it == "MilliQ Water Blank" || type_it == "Replicate" || type_it == "Standard" || type_it == "Procedural Blank"){
+    } else if(type_it == "Sample" || type_it == "MilliQ Water Blank" || type_it == "Replicate" || type_it == "Standard" || type_it == "Procedural Blank" || type_it == "Other"){
       ## "NORMAL" FILES
       # This is the type folder where the files will end up.
       row_type_folder <- get_type_folder(run_sheet_row = row_it,

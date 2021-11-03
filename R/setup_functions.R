@@ -119,5 +119,7 @@ default_folder_layout <- function(){
   names(SampleQueueFolders[[2]][["replicates"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
   SampleQueueFolders[[2]][["procedural blanks"]] <- folderx5
   names(SampleQueueFolders[[2]][["procedural blanks"]]) <- c("ABS","PCT","updated PEM","PEM","workbooks")
+  SampleQueueFolders[[2]][["other"]] <- folderx4
+  names(SampleQueueFolders[[2]][["other"]]) <- c("ABS","PCT","PEM","workbooks")
   return(SampleQueueFolders)
 }
