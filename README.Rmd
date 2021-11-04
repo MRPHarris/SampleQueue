@@ -142,6 +142,8 @@ devtools::install_github("MRPHarris/SampleQueue")
 
 03/11/21 | Added an additional run-sheet row type, 'other'. Rows in the run sheet listed as type 'other' will have their files sorted and sent to the 'other' folder within the export directory without any post-processing. This is intended for use with samples that didn't run properly - either due to premature ending of a run, or user error (e.g. mismatch of samples, accidental repeats, etc.). 
 
+04/11/21 | Procedural blanks ('pblanks') are now saved if subject to mqblank subtraction. Added even more messages to the output text in postprocess_PEM() to provide more information about processing status and assist with error identification.
+
 ## Planned revisions
 
 - update error checking to provide more useful information in the event of (1) file copy failure, and (2) project file transfers. Some common errors (such as incompatible date usage, run sheet name/file mismatches) could probably be diagnosed automatically fairly easily. 

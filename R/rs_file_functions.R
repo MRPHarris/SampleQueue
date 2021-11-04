@@ -334,7 +334,7 @@ postprocess_PEM <- function(run_sheet,
                             neg_to_0 = TRUE,
                             dilution = TRUE){
   #This function deals with the processing steps that might be applied to EEMs from SampleQueue.
-  message("## Processing starting for run-sheet EEMs")
+  message("## Performing setup for run-sheet EEM processing")
   log <- log_file # name juggling to avoid pass-through errors
   # Initial trimming of sqblanks and workbooks
   if(length(which(log$type == "Sample Queue Blank")) > 0){
@@ -376,12 +376,14 @@ postprocess_PEM <- function(run_sheet,
   PEM_samples <- as.character(log_PEM[which(log_PEM$type == "Sample" | log_PEM$type == "Replicate" | log_PEM$type == "Standard"),]$`exported files`)
   # Milli-Q Blank subtraction setup.
   if(isTRUE(any(log$type == "MilliQ Water Blank")) & isTRUE(mqblank_subtract)){
-      mqblank_eemlist <- eem_read_mod(file = PEM_mqblanks)
-      mqblank_eemlist <- average_eems(eemlist = mqblank_eemlist)
-      mqblank_eem <- eem_neg_to_0(mqblank_eemlist[[1]])
+    message("Averaging mqblanks:")
+    mqblank_eemlist <- eem_read_mod(file = PEM_mqblanks)
+    mqblank_eemlist <- average_eems(eemlist = mqblank_eemlist)
+    mqblank_eem <- eem_neg_to_0(mqblank_eemlist[[1]])
+    message("Done!")
   }
-  # Procedural blank subtraction setup.
-  if(isTRUE(any(log$type == "Procedural Blank")) & isTRUE(pblank_subtract)){
+  # Procedural blank subtraction setup. Performed if there are procedural blanks present.
+  if(isTRUE(any(log$type == "Procedural Blank"))){# & isTRUE(pblank_subtract)){
     ## Get the pblank log lines, and the corresponding EEMs.
     PEM_pblank_log <- log_PEM[which(log_PEM$type == "Procedural Blank"),]
     pblank_eemlist <- eem_read_mod(file = PEM_pblanks)
@@ -428,15 +430,29 @@ postprocess_PEM <- function(run_sheet,
         pblank_eemlist[[which_eem]] <- target_eem_res
       }
     }
-    # If there's a milliq blank in the run, subtract it.
-    if(exists("mqblank_eem")){
+    # If there's a milliq blank in the run (and mq blank subtraction is to be performed), subtract it from the procedural blanks.
+    if(exists("mqblank_eem") & isTRUE(mqblank_subtract)){
+      message("Subtracting mqblanks from pblanks.")
       pblank_eemlist <- eemlist_neg_to_0(pblank_eemlist)
       pblank_eemlist <- eemlist_neg_to_0(eemlist_subtract(eems_minuend = pblank_eemlist,
                                                           eem_subtrahend = mqblank_eem))
+      message("Done!")
     }
-    # Final averaging and another layer of negative subtraction
-    pblank_eemlist <- average_eems(eemlist = pblank_eemlist)
-    pblank_eem <- eem_neg_to_0(eem = pblank_eemlist[[1]])
+    ## Saving pblanks
+    pblank_exportfile <- PEM_pblank_log$`exported files`[1]
+    pblank_exportfile <- str_split(pblank_exportfile,"[/]")[[1]]
+    pblank_updated_folder <- paste0(paste(pblank_exportfile[1:(length(pblank_exportfile)-2)], collapse = "/"),"/updated PEM/")
+    pblank_eemlistforsave <- pblank_eemlist
+    message("Saving updated pblanks:")
+    save_eemlist_csvs(pblank_eemlistforsave,
+                      outputfolder = pblank_updated_folder)
+    if(isTRUE(pblank_subtract)){
+      ## perform average for subtraction.
+      message("Averaging Procedural Blanks:")
+      pblank_eemlist <- average_eems(eemlist = pblank_eemlist)
+      pblank_eem <- eem_neg_to_0(eem = pblank_eemlist[[1]])
+      message("Done!")
+    }
   }
   # Iterating along sample types, doing the work on each in turn.
   sample_types <- unique(PEM_sample_log$type)
@@ -444,6 +460,7 @@ postprocess_PEM <- function(run_sheet,
   for(t in seq_along(type_itlist)){
     # sample type for this iteration
     type_it <- sample_types[t]
+    message("## Performing post-processing for type: ",type_it)
     # sample details from log
     PEM_samples_it_log <- PEM_sample_log[which(PEM_sample_log$type == type_it),]
     PEM_samples_it <- as.character(PEM_samples_it_log$`exported files`)
@@ -535,3 +552,4 @@ postprocess_PEM <- function(run_sheet,
                                 outputfolder = target_folder)
   }
 }
+

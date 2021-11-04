@@ -271,6 +271,11 @@ post-processing. This is intended for use with samples that didn’t run
 properly - either due to premature ending of a run, or user error
 (e.g. mismatch of samples, accidental repeats, etc.).
 
+04/11/21 \| Procedural blanks (‘pblanks’) are now saved if subject to
+mqblank subtraction. Added even more messages to the output text in
+postprocess\_PEM() to provide more information about processing status
+and assist with error identification.
+
 ## Planned revisions
 
 -   update error checking to provide more useful information in the
