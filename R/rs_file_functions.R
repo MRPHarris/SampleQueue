@@ -406,7 +406,7 @@ postprocess_PEM <- function(run_sheet,
       # Which EEMs have listed dilution factors?
       dilution_names <- unlist(lapply(str_split(trim_path(PEM_pblank_log[which(!is.na(PEM_pblank_log$dilution)),]$'exported files'),"[.]"),"[",1))
       # Which eems match those names?
-      eem_indices_fordilution <- which(dilution_names %in% eem_names_pre)
+      eem_indices_fordilution <- match(dilution_names, eem_names_pre)
       # iterate along eems for dilution
       pblank_dilution_itlist <- vector("list", length = length(eem_indices_fordilution))
       for(x in seq_along(pblank_dilution_itlist)){
