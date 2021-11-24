@@ -24,15 +24,17 @@ knitr::opts_chunk$set(
 
 _No autosampler? No problem!_
 
-The **SampleQueue** package is a streamlined file processing/handling framework for the Horiba [Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/) spectrofluorometer's sample queuing ("SampleQ") system. During SampleQ, the Aqualog software automatically processes and corrects fluorescence sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do for individual samples (such as correction for inner filter effects, Rayleigh masking, and normalisation). SampleQ also avoids host computer slowdown from a bloated user project folder. 
+The **SampleQueue** package is a streamlined file processing/handling framework for the Horiba [Aqualog](https://www.horiba.com/en_en/products/detail/action/show/Product/aqualog-water-treatment-plant-analyzer-1578/) spectrofluorometer's sample queuing ("SampleQ") system. The goal is to achieve the fastest possible production and collation of Excitation-Emission-Matrix (EEM) fluorescence data without use of any instrument or software add-ons (e.g. autosampler, flow-through cell), whilst still ensuring that results are robust and handled in line with best practice. This package is in no way supported or endorsed by Horiba. 
 
-Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention, comprising a basic combination of prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or Example001Blank). This makes managing outputs extremely cumbersome. 
+During SampleQ, the Aqualog software automatically processes and corrects fluorescence sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do manually for individual samples (such as correction for inner filter effects, Rayleigh masking, and normalisation). SampleQ also avoids host computer slowdown from a bloated user project folder.
 
-This package provides a workaround, allowing the user to compile complex runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and **SampleQueue** allows for rapid sample throughput, followed by easy management of the resulting data files. The package also has support for automatic multi-blank subtraction. 
+Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention, comprising a basic combination of prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or Example001Blank). This makes managing file outputs either extremely cumbersome or outirght impossible.
+
+This package provides a workaround, allowing the user to compile complex analytical runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and **SampleQueue** allows for rapid sample throughput, followed by easy management of the resulting data files. The package also has support for automatic multi-blank subtraction of up to two blank types. 
 
 #### A quick note on ASCII data types
 
-At present **SampleQueue** supports the Processed Excitation-Emission-Matrix (PEM), Absorbance (ABS), and Percent Transmission (PCT) ASCII .dat file types. See 'Supported file and data types' below. 
+At present **SampleQueue** supports the Processed EEM (PEM), Absorbance (ABS), and Percent Transmission (PCT) ASCII .dat file types. See 'Supported file and data types' below. 
 
 ## Using the SampleQueue package
 
@@ -44,14 +46,14 @@ The basic logic comprising the **SampleQueue** workflow is illustrated below.
 
 Setting up the folder framework used by **SampleQueue** is performed by choosing a parent directory and running `create_queue_folders()`. This will fill that folder with all the sub-directories used by the package. 
 
-In a standard workflow, the user then compiles a 'run sheet'. A run sheet is comprised of a basic table containing a given run's sample queue names (i.e. the naming convention that will be used by the Aqualog during analysis), the user's own desired file names, and one of a number of supported row-file 'types' (e.g. 'sample', "mqblank", "sqblank", "standard", "replicate"). An example is shown below.
+In a standard workflow, the user then compiles a 'run sheet'. A run sheet is comprised of a basic table containing a given run's sample queue names (i.e. the naming convention that will be used by the Aqualog during analysis), the user's own desired file names, and one of a number of supported row-file 'types' (e.g. 'sample', "mqblank", "sqblank", "standard", "replicate") that dictate how those files will be handled by the package. An example is shown below.
 
 ```{r, include = TRUE}
 data_example <- readRDS(file = "data/run_sheet_example.rds")
 knitr::kable(data_example)
 ```
 
-Column names must match those shown in the example in order for the package to work. The "Real_Names" column can include any combination of characters or digits reflecting your desired file naming convention. The 'types' determine categorisation and file sorting - for example, files associated with run sheet rows marked 'standard' will be sorted and sent to the standards folder. The checklist column is optional - I use it whilst running samples on the Aqualog to ensure there is no chance of a mix-up during the course of an analysis. Values entered into the "Dilution_Factor" column will be used to multiply that sample's PEM intensity values if the user elects to enable dilution correction.
+Column names must match those shown in the example in order for the package to work. This also means that the user can add columns of their own, as column indexing is targeted to column names not numerical order/position. The "Real_Names" column can include any combination of characters or digits reflecting your desired file naming convention. The 'types' determine categorisation and file sorting - for example, files associated with run sheet rows marked 'standard' will be sorted and sent to the standards folder. The checklist column is optional, and not used by the package - I use it whilst running samples on the Aqualog to ensure there is no chance of a mix-up during the course of an analysis. Values entered into the "Dilution_Factor" column will be used to multiply that sample's PEM intensity values if the user elects to enable dilution correction.
 
 Once analysis using SampleQ on the Aqualog is completed, the user collates the files together in a single folder along with any project (.opj) and text files (.txt). This folder should then be placed into to the **SampleQueue** import directory.
 
@@ -84,7 +86,7 @@ If the user has chosen to export workbook files with their data whilst running t
 
 ### ASCII .dat files
 
-Depending on user choices during the SampleQ setup process on the Aqualog, a number of different ASCII file types will be exported by the system for each sample during analysis. All ASCII files have the .dat file extension. The current version of **SampleQueue** supports the ABS (absorbance data), PEM (sample-blank processed XYY) and PCT (percent transmission) ASCII data types. The others will be added sporadically as needed. 
+Depending on user choices during the SampleQ setup process on the Aqualog, a number of different ASCII file types will be exported by the system for each sample during analysis. All ASCII files have the .dat file extension. The current version of **SampleQueue** supports the ABS (absorbance data), PEM (sample-blank processed XYY) and PCT (percent transmission) ASCII data types. The others will be added sporadically as needed. At present, ABS and PCT files do not have dilution handling, but will hopefully be added at some point. 
 
 A pair of import functions are included for ABS and PCT data (see example below for a simple example of ABS data handling). To read in PEM data, use `eemR::eem_read(data_directory, import_function = "aqualog")`.
 
@@ -146,9 +148,11 @@ devtools::install_github("MRPHarris/SampleQueue")
 
 ## Planned revisions
 
+- add dilution handling for ABS and PCT files.
+
 - update error checking to provide more useful information in the event of (1) file copy failure, and (2) project file transfers. Some common errors (such as incompatible date usage, run sheet name/file mismatches) could probably be diagnosed automatically fairly easily. 
 
-- add handling for more ASCII data types.
+- add global handling for more ASCII data types.
 
 - add processing options chosen (blank subtraction, etc.) to the exported logfile. 
 
