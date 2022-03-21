@@ -43,6 +43,7 @@ process_sample_queue <- function(folder,
                                full_names = TRUE)
   file_names_full <- file_names_full[which(ext_detect(file_names_full) != "txt")]
   file_names_full <- file_names_full[which(ext_detect(file_names_full) != "opj")]
+  file_names_full <- file_names_full[which(ext_detect(file_names_full) != "OPJ")]
   file_names_short <- trim_path(file_names_full)
   # init the file log.
   file_log <- data.frame(matrix(NA,nrow = length(file_names_full),ncol = 3))
