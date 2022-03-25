@@ -148,6 +148,8 @@ devtools::install_github("MRPHarris/SampleQueue")
 
 ## Planned revisions
 
+- update date handling to comply with the more desirable YYYY-MM-DD format, to enable straightforward lexicographic sorting of date-stamped files.
+
 - add dilution handling for ABS and PCT files.
 
 - update error checking to provide more useful information in the event of (1) file copy failure, and (2) project file transfers. Some common errors (such as incompatible date usage, run sheet name/file mismatches) could probably be diagnosed automatically fairly easily. 

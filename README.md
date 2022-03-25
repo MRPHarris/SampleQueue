@@ -291,6 +291,10 @@ and assist with error identification.
 
 ## Planned revisions
 
+-   update date handling to comply with the more desirable YYYY-MM-DD
+    format, to enable straightforward lexicographic sorting of
+    date-stamped files.
+
 -   add dilution handling for ABS and PCT files.
 
 -   update error checking to provide more useful information in the
