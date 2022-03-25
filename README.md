@@ -33,7 +33,7 @@ Unfortunately, the SampleQ system only outputs files using a restrictive
 file naming convention, comprising a basic combination of
 prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or
 Example001Blank). This makes managing file outputs either extremely
-cumbersome or outirght impossible.
+cumbersome or outright impossible.
 
 This package provides a workaround, allowing the user to compile complex
 analytical runs using SampleQ via the creation of a ‘run sheet’, in a
@@ -76,31 +76,31 @@ data_example <- readRDS(file = "data/run_sheet_example.rds")
 knitr::kable(data_example)
 ```
 
-| Order | Remaining | SampleQ\_Name         | Real\_Name           | Type      | Checklist | Dilution\_Factor |
-|------:|----------:|:----------------------|:---------------------|:----------|:----------|-----------------:|
-|     1 |        10 | Example0001Blank      | swc\_sqblank\_050721 | sqblank   | NA        |               NA |
-|     2 |         9 | Example0001Sample0001 | mqblank\_050721a     | mqblank   | NA        |               NA |
-|     3 |         8 | Example0001Sample0002 | mqblank\_050721b     | mqblank   | NA        |               NA |
-|     4 |         7 | Example0001Sample0003 | Sample\_1            | sample    | NA        |               NA |
-|     5 |         6 | Example0001Sample0004 | Sample\_2            | sample    | NA        |               NA |
-|     6 |         5 | Example0001Sample0005 | Sample\_3            | sample    | NA        |               NA |
-|     7 |         4 | Example0001Sample0006 | Sample\_4            | sample    | NA        |                2 |
-|     8 |         3 | Example0001Sample0007 | Sample\_5            | sample    | NA        |               NA |
-|     9 |         2 | Example0001Sample0018 | StandardA\_050721a   | standard  | NA        |               NA |
-|    10 |         1 | Example0001Sample0019 | Sample\_1\_re        | replicate | NA        |               NA |
-|    11 |         0 | Example0001Sample0020 | mqblank\_050721c     | mqblank   | NA        |               NA |
+| Order | Remaining | SampleQ_Name          | Real_Name          | Type      | Checklist | Dilution_Factor |
+|------:|----------:|:----------------------|:-------------------|:----------|:----------|----------------:|
+|     1 |        10 | Example0001Blank      | swc_sqblank_050721 | sqblank   | NA        |              NA |
+|     2 |         9 | Example0001Sample0001 | mqblank_050721a    | mqblank   | NA        |              NA |
+|     3 |         8 | Example0001Sample0002 | mqblank_050721b    | mqblank   | NA        |              NA |
+|     4 |         7 | Example0001Sample0003 | Sample_1           | sample    | NA        |              NA |
+|     5 |         6 | Example0001Sample0004 | Sample_2           | sample    | NA        |              NA |
+|     6 |         5 | Example0001Sample0005 | Sample_3           | sample    | NA        |              NA |
+|     7 |         4 | Example0001Sample0006 | Sample_4           | sample    | NA        |               2 |
+|     8 |         3 | Example0001Sample0007 | Sample_5           | sample    | NA        |              NA |
+|     9 |         2 | Example0001Sample0018 | StandardA_050721a  | standard  | NA        |              NA |
+|    10 |         1 | Example0001Sample0019 | Sample_1\_re       | replicate | NA        |              NA |
+|    11 |         0 | Example0001Sample0020 | mqblank_050721c    | mqblank   | NA        |              NA |
 
 Column names must match those shown in the example in order for the
 package to work. This also means that the user can add columns of their
 own, as column indexing is targeted to column names not numerical
-order/position. The “Real\_Names” column can include any combination of
+order/position. The “Real_Names” column can include any combination of
 characters or digits reflecting your desired file naming convention. The
 ‘types’ determine categorisation and file sorting - for example, files
 associated with run sheet rows marked ‘standard’ will be sorted and sent
 to the standards folder. The checklist column is optional, and not used
 by the package - I use it whilst running samples on the Aqualog to
 ensure there is no chance of a mix-up during the course of an analysis.
-Values entered into the “Dilution\_Factor” column will be used to
+Values entered into the “Dilution_Factor” column will be used to
 multiply that sample’s PEM intensity values if the user elects to enable
 dilution correction.
 
@@ -116,9 +116,9 @@ within the **SampleQueue** export folder. Optional parameters can be set
 for milli-q blank subtraction and dilution.
 
 ![Processing a set of large EEMs with
-process\_sample\_queue()](man/figures/SQ_PHFC_gif.gif) Here’s a small
-example of what the console churns out whilst process\_sample\_queue()
-is running. These EEMs were quite large; smaller EEMs will copy/transfer
+process_sample_queue()](man/figures/SQ_PHFC_gif.gif) Here’s a small
+example of what the console churns out whilst process_sample_queue() is
+running. These EEMs were quite large; smaller EEMs will copy/transfer
 much faster. The large volume of text is intentional, and gives an
 explicit indication of which part of the processing caused an error,
 should one occur.
@@ -247,7 +247,7 @@ that contained no blanks resulted in an error.
 06/09/21 \| Dilution support added. Targeted blank subtraction replaced
 with a generalised ‘post processing’ function. The user can now
 optionally perform blank subtraction as before, along with dilution
-using a new column in the run sheet (Dilution\_Factor). Various parts in
+using a new column in the run sheet (Dilution_Factor). Various parts in
 the `process_sample_queue()` function have also been made more verbose.
 This adds clutter to the console, but aids in error checking - it should
 be pretty clear which part in the process caused a failure, if one
@@ -259,9 +259,9 @@ folder in the file type export sub-directory.
 
 13/09/21 \| Added Absorbance and Percent Transmission data importers,
 `ABS_read()` and `PCT_read()`, for importing ABS and PCT .dat ASCII
-files. Both functions are direct modifications of absorbance\_read()
-from the staRdom package, with some adjustments to ensure .dat files are
-read correctly.
+files. Both functions are direct modifications of absorbance_read() from
+the staRdom package, with some adjustments to ensure .dat files are read
+correctly.
 
 14/10/21 \| Readme update for ABS reading and plotting.
 
@@ -286,7 +286,7 @@ properly - either due to premature ending of a run, or user error
 
 04/11/21 \| Procedural blanks (‘pblanks’) are now saved if subject to
 mqblank subtraction. Added even more messages to the output text in
-postprocess\_PEM() to provide more information about processing status
+postprocess_PEM() to provide more information about processing status
 and assist with error identification.
 
 ## Planned revisions

@@ -28,7 +28,7 @@ The **SampleQueue** package is a streamlined file processing/handling framework 
 
 During SampleQ, the Aqualog software automatically processes and corrects fluorescence sample data based upon pre-set parameters, rapidly performing tasks that would typically take far longer to do manually for individual samples (such as correction for inner filter effects, Rayleigh masking, and normalisation). SampleQ also avoids host computer slowdown from a bloated user project folder.
 
-Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention, comprising a basic combination of prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or Example001Blank). This makes managing file outputs either extremely cumbersome or outirght impossible.
+Unfortunately, the SampleQ system only outputs files using a restrictive file naming convention, comprising a basic combination of prefixes/suffixes and sequential digits (e.g. Example001Sample0001 or Example001Blank). This makes managing file outputs either extremely cumbersome or outright impossible.
 
 This package provides a workaround, allowing the user to compile complex analytical runs using SampleQ via the creation of a 'run sheet', in a fashion that should be familiar to users of other scientific instruments. Even using run setups incorporating multiple blanks, standards and replicates, the combination of SampleQ and **SampleQueue** allows for rapid sample throughput, followed by easy management of the resulting data files. The package also has support for automatic multi-blank subtraction of up to two blank types. 
 
