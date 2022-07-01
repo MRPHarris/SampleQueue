@@ -291,6 +291,10 @@ and assist with error identification.
 
 ## Planned revisions
 
+-   add handling for files not on the run sheet or handled separately.
+    E.g. unintentional inclusions, separate SQ blanks, .aqu config
+    files.
+
 -   update date handling to comply with the more desirable YYYY-MM-DD
     format, to enable straightforward lexicographic sorting of
     date-stamped files.
