@@ -422,7 +422,7 @@ postprocess_PEM <- function(run_sheet,
         target_eem_df <- as.data.frame(target_eem, gather = FALSE)
         target_eem_df_proc <- target_eem_df*dilfac
         # Coerce back to data.frame
-        target_eem_res <- eemdf_to_eem(eemdf = target_eem_df_proc,
+        target_eem_res <- eemdf_to_eem_int(eemdf = target_eem_df_proc,
                                        file = target_eem$file,
                                        sample = target_eem$sample,
                                        location = target_eem$location)
@@ -534,7 +534,7 @@ postprocess_PEM <- function(run_sheet,
           target_eem_df <- as.data.frame(target_eem, gather = FALSE)
           target_eem_df_proc <- target_eem_df*dilfac
           # Coerce back to data.frame
-          target_eem_res <- eemdf_to_eem(eemdf = target_eem_df_proc,
+          target_eem_res <- eemdf_to_eem_int(eemdf = target_eem_df_proc,
                                          file = target_eem$file,
                                          sample = target_eem$sample,
                                          location = target_eem$location)

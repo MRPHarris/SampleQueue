@@ -481,7 +481,7 @@ average_eems <- function(eemlist){
 #' @param location the location of the EEM file, if applicable.
 #'
 #'@noRd
-eemdf_to_eem <- function(eemdf,
+eemdf_to_eem_int <- function(eemdf,
                          file,
                          sample,
                          location){
