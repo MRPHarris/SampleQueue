@@ -497,7 +497,7 @@ postprocess_PEM <- function(run_sheet,
         message(paste0("Milli-Q blank subtraction performed for ",type_it," EEMs"))
       }
     } else {
-      eems_subtracted <- sample_eemlist # var handover if blank subtraction is performed.
+      eems_subtracted <- sample_eemlist # var handover if no blank subtraction is performed.
     }
     # 2) Procedural blank subtraction, only for samples and replicates - i.e. those types who have been subject to the procedure the blanks are targeting.
     if(type_it == "Sample" | type_it == "Replicate"){
